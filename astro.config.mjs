@@ -7,9 +7,9 @@ import { readFileSync, renameSync, rmSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 
 // Astro hashes the scripts it bundles, not is:inline ones. These files are inlined
-// verbatim (theme: BaseLayout, kaomoji: NotFoundView), so hashing the same bytes
+// verbatim (theme: BaseLayout, not-found: NotFoundView), so hashing the same bytes
 // here keeps the CSP in sync.
-const inlineScriptHashes = ['theme.js', 'kaomoji.js'].map((file) => {
+const inlineScriptHashes = ['theme.js', 'not-found.js'].map((file) => {
   const source = readFileSync(new URL(`./src/scripts/${file}`, import.meta.url), 'utf8');
   return /** @type {`sha256-${string}`} */ (`sha256-${createHash('sha256').update(source).digest('base64')}`);
 });

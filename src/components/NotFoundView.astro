@@ -3,7 +3,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Masthead from './Masthead.astro';
 import { kaomoji, notFoundCopy } from '../i18n/not-found';
 import type { Lang } from '../i18n/ui';
-import kaomojiScript from '../scripts/kaomoji.js?raw';
+import notFoundScript from '../scripts/not-found.js?raw';
+import { routes } from '../i18n/routes';
 
 interface Props {
   lang: Lang;
@@ -16,8 +17,9 @@ const t = notFoundCopy[lang];
 <BaseLayout lang={lang} title="404" description={t.description} view="portfolio" noindex>
   <Masthead variant="reports" title={kaomoji[0]} titleId="kaomoji" paragraphs={[t.message]}>
     <p slot="kicker" class="code">404</p>
+    <p class="back"><a id="go-back" href={routes.portfolio[lang]}>{t.back}</a></p>
     <script is:inline id="kaomoji-list" type="application/json" set:html={JSON.stringify(kaomoji)} />
-    <script is:inline set:html={kaomojiScript} />
+    <script is:inline set:html={notFoundScript} />
   </Masthead>
 </BaseLayout>
 
@@ -32,6 +34,15 @@ const t = notFoundCopy[lang];
     text-transform: uppercase;
     color: var(--ink);
     opacity: 0.9;
+  }
+  /* Role-line spacing above; footer view-switch link treatment. */
+  .back {
+    margin: clamp(26px, 4vh, 38px) 0 0;
+    font-size: 15px;
+  }
+  .back a {
+    color: var(--ink);
+    border-bottom: 1px solid var(--ink);
   }
   /* Kaomoji are long and must not wrap; scale down on narrow screens instead. */
   :global(#kaomoji) {
