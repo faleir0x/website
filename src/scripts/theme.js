@@ -1,4 +1,4 @@
-// Theme: the only client JS on the site. Inlined synchronously in <head> so
+// Theme toggle. Inlined synchronously in <head> so
 // data-theme is set before first paint. The click listener is delegated, so it
 // binds before the header button exists. Its CSP hash is computed from this
 // file in astro.config.mjs, so edits here need no manual hash update.
