@@ -30,8 +30,11 @@ const localized404 = {
 export default defineConfig({
   site: 'https://faleir0x.com',
   output: 'static',
-  // Cloudflare Pages redirects /x → /x/ for directory builds; emit matching links.
-  trailingSlash: 'always',
+  // Links are written with a trailing slash and Cloudflare redirects /x → /x/.
+  // 'ignore' (not 'always') only changes the local dev/preview server, which
+  // otherwise shows its own notice instead of the 404 page for /x; the build
+  // output is identical either way.
+  trailingSlash: 'ignore',
   integrations: [
     mdx(),
     sitemap({
