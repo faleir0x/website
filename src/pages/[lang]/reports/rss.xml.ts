@@ -13,7 +13,7 @@ export async function GET({ params, site }: APIContext) {
   const reports = await getReports(lang);
 
   return rss({
-    title: t.pageTitle,
+    title: `faleir0x — ${t.title}`,
     description: t.intro,
     // Channel <link>; item links resolve against its origin.
     site: new URL(routes.reports[lang], site).href,

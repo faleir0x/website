@@ -4,7 +4,6 @@ type Localized = Record<Lang, string>;
 
 export const portfolioCopy = {
   pt: {
-    pageTitle: 'Cauê Faleiros — Segurança Ofensiva',
     role: 'Segurança Ofensiva',
     lead: 'Atuo em segurança ofensiva, com foco em testes de intrusão em aplicações web e APIs. Meu trabalho consiste em identificar vulnerabilidades, desde o OWASP Top 10 até abusos complexos de lógica de negócio, explorar a falha até uma prova de conceito (PoC) funcional e escrever a correção a nível de código.',
     support: 'Minha abordagem é guiada pela minha experiência como desenvolvedor full-stack. Por ter atuado diretamente na construção, manutenção e deploy dos sistemas que hoje testo, lidando com autenticação, proxies reversos e logs centralizados, compreendo como esses ambientes funcionam em produção. Essa visão de quem constrói me permite enxergar falhas arquiteturais que ferramentas automatizadas ignoram e entregar correções precisas para as equipes de engenharia.',
@@ -13,7 +12,6 @@ export const portfolioCopy = {
     nowLabel: 'Atual',
   },
   en: {
-    pageTitle: 'Cauê Faleiros — Offensive Security',
     role: 'Offensive Security',
     lead: 'I focus on offensive security, specifically web application and API penetration testing. My work involves uncovering vulnerabilities, from OWASP Top 10 to business-logic abuse, developing functional proofs of concept, and writing the code to fix them.',
     support: "My approach is rooted in my background as a full-stack developer. Because I have hands-on experience building, deploying, and maintaining the systems I now test, including authentication controls, reverse proxies, and centralized logging, I know how these environments are structured in production. This builder's perspective allows me to spot architectural blind spots that automated tools miss and provide practical, dev-ready remediations.",

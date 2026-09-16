@@ -2,14 +2,12 @@ import type { Lang } from './ui';
 
 export const reportsCopy = {
   pt: {
-    pageTitle: 'Relatórios — Cauê Faleiros',
     title: 'Relatórios',
     intro: 'Relatórios de máquinas do TryHackMe, desafios de CTF e vulnerabilidades reportadas via HackerOne. Cada um cobre reconhecimento, vetor de entrada, exploração e escalada de privilégios, com a correção que fecharia a falha.',
     featuredKicker: 'Último relatório',
     readLabel: 'Ler →',
   },
   en: {
-    pageTitle: 'Reports — Cauê Faleiros',
     title: 'Reports',
     intro: 'Reports from TryHackMe machines, CTF challenges and vulnerabilities disclosed through HackerOne. Each one covers recon, initial foothold, exploitation and privilege escalation, with the fix that would close the flaw.',
     featuredKicker: 'Latest report',

@@ -16,7 +16,7 @@ const t = reportsCopy[lang];
 const [latest, ...rest] = await getReports(lang);
 ---
 
-<BaseLayout lang={lang} title={t.pageTitle} description={t.intro} view="reports">
+<BaseLayout lang={lang} title={t.title} description={t.intro} view="reports">
   <Masthead variant="reports" title={t.title} paragraphs={[t.intro]} />
   {
     latest && (

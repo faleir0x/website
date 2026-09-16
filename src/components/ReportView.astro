@@ -25,7 +25,7 @@ const { Content } = await render(report);
 
 <BaseLayout
   lang={lang}
-  title={`${data.title} — ${t.title}`}
+  title={data.title}
   description={data.summary}
   view="reports"
   translation={hasTranslation ? reportPath(otherLang(lang), reportSlug(report)) : null}
