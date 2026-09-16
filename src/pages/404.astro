@@ -1,0 +1,10 @@
+---
+// Served by Cloudflare Pages for any unknown URL. Without a top-level 404.html,
+// Pages would treat the site as a SPA and answer every unknown path with a 200.
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Masthead from '../components/Masthead.astro';
+---
+
+<BaseLayout lang="en" title="404 — Cauê Faleiros" description="Page not found." view="portfolio" noindex>
+  <Masthead variant="reports" title="404" paragraphs={["This page doesn't exist, or it moved."]} />
+</BaseLayout>

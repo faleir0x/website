@@ -29,10 +29,11 @@ const { Content } = await render(report);
   description={data.summary}
   view="reports"
   translation={hasTranslation ? reportPath(otherLang(lang), reportSlug(report)) : null}
+  article={{ published: data.date, modified: data.updated }}
 >
   <article>
     <Masthead variant="reports" title={data.title} paragraphs={[data.summary]}>
-      {/* PROPOSAL — back link, in the featured card's kicker treatment. */}
+      {/* Back link, in the featured card's kicker treatment. */}
       <a slot="kicker" class="back" href={routes.reports[lang]}>← {t.title}</a>
       <ReportMeta data={data}>
         <time datetime={isoDate(data.date)}>{isoDate(data.date)}</time>
@@ -80,8 +81,8 @@ const { Content } = await render(report);
     opacity: 0.9;
   }
 
-  /* Stack grid, except the label column fits its longest label (PROPOSAL: the
-     spec's 78px is sized for Stack's short labels). */
+  /* Stack grid, except the label column fits its longest label (Stack's 78px
+     is sized for its short labels). */
   dl {
     display: grid;
     grid-template-columns: max-content minmax(0, 1fr);

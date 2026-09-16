@@ -21,16 +21,30 @@ interface Props {
    *   index, and no hreflang alternates are emitted.
    */
   translation?: string | null;
+  /** Write-up pages: Open Graph type "article" with these dates. */
+  article?: { published: Date; modified?: Date };
+  /** Error pages: no canonical, no alternates, not indexed. */
+  noindex?: boolean;
 }
 
-const { lang, title, description, view, translation = routes[view][otherLang(lang)] } = Astro.props;
+const {
+  lang,
+  title,
+  description,
+  view,
+  translation = routes[view][otherLang(lang)],
+  article,
+  noindex = false,
+} = Astro.props;
 
 const other = otherLang(lang);
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const toggleHref = translation ?? routes[view][other];
 
+const ogLocale = { en: 'en_US', pt: 'pt_BR' } as const;
+
 const alternates =
-  translation === null
+  translation === null || noindex
     ? []
     : [
         { lang, href: canonical.href },
@@ -49,11 +63,23 @@ const xDefault = alternates.find((a) => a.lang === langs[0]);
 
     <title>{title}</title>
     <meta name="description" content={description} />
-    <link rel="canonical" href={canonical} />
+    {noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonical} />}
     {alternates.map((a) => <link rel="alternate" hreflang={htmlLang[a.lang]} href={a.href} />)}
     {xDefault && <link rel="alternate" hreflang="x-default" href={xDefault.href} />}
     <link rel="alternate" type="application/rss+xml" title={reportsCopy[lang].pageTitle} href={rssPath(lang)} />
     <link rel="sitemap" href="/sitemap-index.xml" />
+
+    {/* Link previews (LinkedIn, Discord, X…). Text-only: the site has no images. */}
+    <meta property="og:site_name" content="faleir0x" />
+    <meta property="og:type" content={article ? 'article' : 'website'} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    {!noindex && <meta property="og:url" content={canonical} />}
+    <meta property="og:locale" content={ogLocale[lang]} />
+    {alternates.length > 0 && <meta property="og:locale:alternate" content={ogLocale[other]} />}
+    {article && <meta property="article:published_time" content={article.published.toISOString()} />}
+    {article?.modified && <meta property="article:modified_time" content={article.modified.toISOString()} />}
+    <meta name="twitter:card" content="summary" />
 
     <Font cssVariable="--font-barlow" preload={[{ weight: 400 }]} />
     <Font cssVariable="--font-newsreader" preload />
@@ -72,8 +98,7 @@ const xDefault = alternates.find((a) => a.lang === langs[0]);
 </html>
 
 <style is:global>
-  /* Base inherited from the Industry stylesheet the prototype loads
-     (design_handoff_portfolio/industry-styles.css). Everything that doesn't set
+  /* Base type and box model from the design system. Everything that doesn't set
      its own line-height relies on the 1.55 here. */
   *,
   *::before,
@@ -92,7 +117,7 @@ const xDefault = alternates.find((a) => a.lang === langs[0]);
     background: var(--bg);
   }
 
-  /* Element-level rules from README § Interactions & Behavior. */
+  /* Element-level rules: links, selection, focus. */
   a {
     color: inherit;
     text-decoration: none;

@@ -1,5 +1,5 @@
-/* Design tokens — design_handoff_portfolio/README.md § Design Tokens.
-   Palette: Graphite (shipped default). Component styles live in scoped <style> blocks. */
+/* Design tokens.
+   Palette: Graphite. Component styles live in scoped <style> blocks. */
 
 :root {
   /* Native UI (scrollbars on overflowing code blocks, the page scrollbar) follows the theme. */

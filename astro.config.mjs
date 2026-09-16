@@ -19,8 +19,8 @@ export default defineConfig({
     mdx(),
     sitemap({
       i18n: { defaultLocale: 'en', locales: { en: 'en', pt: 'pt-BR' } },
-      // "/" only redirects to /en/.
-      filter: (page) => new URL(page).pathname !== '/',
+      // "/" only redirects to /en/; the 404 isn't a page to index.
+      filter: (page) => !['/', '/404/'].includes(new URL(page).pathname),
     }),
   ],
   // Monochrome code blocks: no Shiki/Prism colors on a site with no accent color.
