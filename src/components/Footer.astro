@@ -21,6 +21,22 @@ const profiles = [
 ];
 ---
 
+{/*
+  Phones: the sticky bar keeps only the email and the view switch; profile and
+  resume links sit in this grid at the end of the page instead. Desktop shows
+  everything in the sticky bar and hides this grid.
+*/}
+<nav class="links-grid" aria-label="Links">
+  {
+    profiles.map((p) => (
+      <a href={p.href} target="_blank" rel="noopener">
+        {p.label}
+      </a>
+    ))
+  }
+  <a href="/resume/">{t.cv}</a>
+</nav>
+
 <footer>
   <a class="contact" href="mailto:contact@faleir0x.com">contact@faleir0x.com</a>
   {
@@ -64,5 +80,38 @@ const profiles = [
     margin-left: auto;
     color: var(--ink);
     border-bottom: 1px solid var(--ink);
+  }
+
+  .links-grid {
+    display: none;
+  }
+
+  /* Below this width the full row no longer fits on one line. */
+  @media (max-width: 759px) {
+    footer {
+      flex-wrap: nowrap;
+      gap: 16px;
+    }
+    .secondary {
+      display: none;
+    }
+
+    /* Section-rule pattern; three aligned columns. */
+    .links-grid {
+      flex: none;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px 16px;
+      padding: 26px 0 30px;
+      border-top: 1px solid color-mix(in srgb, currentColor 16%, transparent);
+      font-size: 15px;
+    }
+    .links-grid a {
+      width: fit-content;
+      opacity: 0.7;
+    }
+    .links-grid a:hover {
+      opacity: 1;
+    }
   }
 </style>
