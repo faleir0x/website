@@ -63,9 +63,16 @@ export default defineConfig({
         "font-src 'self'",
         "base-uri 'none'",
         "form-action 'none'",
+        // Cloudflare Web Analytics beacon reports here (no cookies).
+        'connect-src https://cloudflareinsights.com',
         'upgrade-insecure-requests',
       ],
-      scriptDirective: { hashes: inlineScriptHashes },
+      scriptDirective: {
+        // 'self' is listed explicitly: setting resources replaces Astro's default.
+        // Cloudflare Pages injects the Web Analytics beacon from this host.
+        resources: ["'self'", 'https://static.cloudflareinsights.com'],
+        hashes: inlineScriptHashes,
+      },
     },
   },
   // Downloaded at build time and served from /_astro/fonts — no Google request at runtime.
