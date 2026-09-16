@@ -63,8 +63,9 @@ export default defineConfig({
         "font-src 'self'",
         "base-uri 'none'",
         "form-action 'none'",
-        // Cloudflare Web Analytics beacon reports here (no cookies).
-        'connect-src https://cloudflareinsights.com',
+        // Cloudflare Web Analytics beacon (no cookies): on a proxied domain it reports to
+        // this site's own /cdn-cgi/rum, otherwise to cloudflareinsights.com.
+        "connect-src 'self' https://cloudflareinsights.com",
         'upgrade-insecure-requests',
       ],
       scriptDirective: {
