@@ -1,0 +1,43 @@
+---
+/** Section with the 140px label column + fluid content column. */
+interface Props {
+  label: string;
+}
+
+const { label } = Astro.props;
+---
+
+<section>
+  <div class="label-col">
+    <h2>{label}</h2>
+  </div>
+  <div class="content-col">
+    <slot />
+  </div>
+</section>
+
+<style>
+  section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 32px;
+    padding: 26px 0 clamp(34px, 5vh, 52px);
+    border-top: 1px solid color-mix(in srgb, currentColor 16%, transparent);
+  }
+  .label-col {
+    flex: 0 0 140px;
+  }
+  h2 {
+    margin: 0;
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    opacity: 0.6;
+  }
+  .content-col {
+    flex: 1 1 380px;
+    min-width: 0;
+  }
+</style>

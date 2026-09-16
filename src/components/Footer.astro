@@ -1,0 +1,68 @@
+---
+import { ui, type Lang } from '../i18n/ui';
+import { routes, type View } from '../i18n/routes';
+
+interface Props {
+  lang: Lang;
+  view: View;
+}
+
+const { lang, view } = Astro.props;
+const t = ui[lang];
+
+// The switch points at the other view; its label names that view.
+const target: View = view === 'portfolio' ? 'reports' : 'portfolio';
+
+const profiles = [
+  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/cauefaleiros/' },
+  { label: 'GitHub', href: 'https://github.com/faleir0x' },
+  { label: 'HackerOne', href: 'https://hackerone.com/faleir0x' },
+  { label: 'TryHackMe', href: 'https://tryhackme.com/p/faleir0x' },
+];
+---
+
+<footer>
+  <a class="contact" href="mailto:contact@faleir0x.com">contact@faleir0x.com</a>
+  {
+    profiles.map((p) => (
+      <a class="secondary" href={p.href} target="_blank" rel="noopener">
+        {p.label}
+      </a>
+    ))
+  }
+  {/* Resume destination pending — README § Known gaps. */}
+  <a class="secondary" href="#">{t.cv}</a>
+  <a class="switch" href={routes[target][lang]}>{t[target]}</a>
+</footer>
+
+<style>
+  footer {
+    position: sticky;
+    bottom: 0;
+    flex: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 26px;
+    align-items: baseline;
+    margin: 0 calc(-1 * clamp(22px, 5vw, 34px));
+    padding: 20px clamp(22px, 5vw, 34px);
+    background: var(--bg);
+    border-top: 1px solid color-mix(in srgb, currentColor 16%, transparent);
+    font-size: 15px;
+  }
+  .contact {
+    border-bottom: 1px solid var(--ink);
+    padding-bottom: 1px;
+  }
+  .secondary {
+    opacity: 0.7;
+  }
+  .secondary:hover {
+    opacity: 1;
+  }
+  .switch {
+    margin-left: auto;
+    color: var(--ink);
+    border-bottom: 1px solid var(--ink);
+  }
+</style>

@@ -1,0 +1,61 @@
+---
+interface Props {
+  title: string;
+  /** Small uppercase line under the title (Portfolio only). */
+  role?: string;
+  paragraphs: string[];
+  /** Bottom padding differs between the two views. */
+  variant: 'portfolio' | 'reports';
+}
+
+const { title, role, paragraphs, variant } = Astro.props;
+---
+
+<div class:list={['masthead', variant]}>
+  <slot name="kicker" />
+  <h1>{title}</h1>
+  {role && <p class="role">{role}</p>}
+  {paragraphs.map((text) => <p class="lede">{text}</p>)}
+  <slot />
+</div>
+
+<style>
+  .masthead.portfolio {
+    padding: clamp(56px, 11vh, 104px) 0 clamp(44px, 8vh, 72px);
+  }
+  .masthead.reports {
+    padding: clamp(56px, 11vh, 104px) 0 clamp(34px, 6vh, 56px);
+  }
+  h1 {
+    margin: 0;
+    font-family: var(--font-heading);
+    font-weight: 400;
+    font-size: clamp(42px, 6.4vw, 60px);
+    letter-spacing: -0.015em;
+    line-height: 1.02;
+  }
+  .role {
+    margin: 6px 0 clamp(26px, 4vh, 38px);
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: 14px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    opacity: 0.6;
+  }
+  .lede {
+    margin: 0;
+    max-width: 44em;
+    font-size: 16px;
+    line-height: 1.6;
+    opacity: 0.7;
+    text-wrap: pretty;
+  }
+  /* No role line: the first paragraph follows the title directly. */
+  h1 + .lede {
+    margin-top: clamp(20px, 3.5vh, 30px);
+  }
+  .lede + .lede {
+    margin-top: 18px;
+  }
+</style>

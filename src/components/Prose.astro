@@ -1,0 +1,148 @@
+---
+/** Wrapper for rendered MDX write-up bodies. */
+---
+
+<div class="prose"><slot /></div>
+
+<style>
+  /*
+   * PROPOSAL — not in the design handoff. The spec has no write-up page, so
+   * these values are derived from the existing scale and patterns, with the
+   * source noted per rule. Revisit when a write-up design exists.
+   */
+
+  .prose {
+    border-top: 1px solid color-mix(in srgb, currentColor 16%, transparent); /* section rule */
+    padding: 26px 0 clamp(34px, 5vh, 52px); /* band padding */
+  }
+
+  /* Body copy — masthead lede treatment. */
+  .prose :global(:is(p, ul, ol, blockquote)) {
+    margin: 18px 0 0;
+    max-width: 44em;
+    font-size: 16px;
+    line-height: 1.6;
+    text-wrap: pretty;
+  }
+  .prose :global(:is(p, li)) {
+    opacity: 0.7;
+  }
+  /* Nested opacity would compound. */
+  .prose :global(li p) {
+    opacity: 1;
+  }
+  .prose :global(:is(ul, ol)) {
+    padding-left: 1.25em; /* no spec value */
+  }
+  .prose :global(li + li) {
+    margin-top: 6px; /* meta row gap */
+  }
+  .prose :global(strong) {
+    font-weight: 600;
+  }
+
+  /* h2 — section label (12px/600/.14em/uppercase/.6) over a section rule, band rhythm. */
+  .prose :global(h2) {
+    margin: clamp(34px, 5vh, 52px) 0 0;
+    padding-top: 26px;
+    border-top: 1px solid color-mix(in srgb, currentColor 16%, transparent);
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    opacity: 0.6;
+  }
+  /* The wrapper already draws the rule for a leading h2. */
+  .prose > :global(:first-child) {
+    margin-top: 0;
+  }
+  .prose > :global(h2:first-child) {
+    padding-top: 0;
+    border-top: 0;
+  }
+  /* h3 — employer-name treatment (16px/500). */
+  .prose :global(h3) {
+    margin: 26px 0 0;
+    font-size: 16px;
+    font-weight: 500;
+  }
+
+  /* Links — contact-link treatment. */
+  .prose :global(a) {
+    border-bottom: 1px solid var(--ink);
+  }
+
+  /* Code — no mono face in the spec; system stack. Monochrome, hairline frame. */
+  .prose :global(:is(code, pre, kbd)) {
+    font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, "Liberation Mono", monospace;
+  }
+  .prose :global(:not(pre) > code) {
+    font-size: 0.875em;
+  }
+  .prose :global(pre) {
+    margin: 22px 0 0; /* experience group gap */
+    padding: 16px 18px;
+    overflow-x: auto;
+    border: 1px solid color-mix(in srgb, currentColor 16%, transparent);
+    font-size: 13px; /* meta size */
+    line-height: 1.6;
+    tab-size: 2;
+  }
+
+  /* Blockquote — hairline in ink, like the featured card border. */
+  .prose :global(blockquote) {
+    padding-left: 18px;
+    border-left: 1px solid var(--ink);
+  }
+  .prose :global(blockquote > :first-child) {
+    margin-top: 0;
+  }
+
+  /* Tables — report-list rows: 12% sub-rules, label-style header. */
+  .prose :global(table) {
+    display: block;
+    max-width: 100%;
+    overflow-x: auto;
+    margin: 22px 0 0;
+    border-collapse: collapse;
+    font-size: 15px;
+  }
+  .prose :global(:is(th, td)) {
+    padding: 8px 24px 8px 0;
+    border-top: 1px solid color-mix(in srgb, currentColor 12%, transparent);
+    text-align: left;
+    vertical-align: baseline;
+  }
+  .prose :global(th) {
+    border-top: 0;
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    opacity: 0.6;
+  }
+
+  .prose :global(hr) {
+    margin: clamp(34px, 5vh, 52px) 0 0;
+    border: 0;
+    border-top: 1px solid color-mix(in srgb, currentColor 16%, transparent);
+  }
+  /* An explicit rule before a section heading replaces the heading's own rule. */
+  .prose :global(hr + h2) {
+    margin-top: 0;
+    border-top: 0;
+  }
+  .prose :global(img) {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 22px 0 0;
+  }
+
+  /* Last so it wins over element margins above. */
+  .prose :global(:is(h2, h3) + *) {
+    margin-top: 12px; /* role-row padding */
+  }
+</style>

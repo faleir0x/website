@@ -1,0 +1,77 @@
+---
+import Band from './Band.astro';
+import { experience, portfolioCopy } from '../i18n/portfolio';
+import type { Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = portfolioCopy[lang];
+---
+
+<Band label={t.experienceLabel}>
+  <div class="employers">
+    {
+      experience.map((employer) => (
+        <div>
+          <h3>{employer.name}</h3>
+          {employer.roles.map((role) => (
+            <div class="role">
+              <span class="title">{role.title[lang]}</span>
+              <span class="dates">
+                {role.from} → {role.to ?? t.nowLabel}
+              </span>
+              <p>{role.description[lang]}</p>
+            </div>
+          ))}
+        </div>
+      ))
+    }
+  </div>
+</Band>
+
+<style>
+  .employers {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+  h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 500;
+  }
+  .role {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3px 16px;
+    align-items: baseline;
+    padding: 12px 0 0;
+    margin: 12px 0 0;
+    border-top: 1px solid color-mix(in srgb, currentColor 12%, transparent);
+  }
+  h3 + .role {
+    margin-top: 10px;
+  }
+  .title {
+    flex: 1 1 auto;
+    font-size: 15px;
+  }
+  .dates {
+    font-size: 14px;
+    opacity: 0.68;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  p {
+    flex: 1 1 100%;
+    margin: 5px 0 0;
+    max-width: 56ch;
+    font-size: 15px;
+    line-height: 1.55;
+    opacity: 0.7;
+    text-wrap: pretty;
+  }
+</style>

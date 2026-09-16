@@ -1,0 +1,12 @@
+---
+import type { GetStaticPaths, InferGetStaticPropsType } from 'astro';
+import ReportView from '../../../components/ReportView.astro';
+import { reportPaths } from '../../../lib/reports';
+
+export const getStaticPaths = (() => reportPaths('en')) satisfies GetStaticPaths;
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+const { report, hasTranslation } = Astro.props as Props;
+---
+
+<ReportView lang="en" report={report} hasTranslation={hasTranslation} />

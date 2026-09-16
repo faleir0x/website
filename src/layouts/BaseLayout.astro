@@ -1,0 +1,150 @@
+---
+import { Font } from 'astro:assets';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { htmlLang, otherLang, type Lang } from '../i18n/ui';
+import { routes, type View } from '../i18n/routes';
+import '../styles/global.css';
+
+interface Props {
+  lang: Lang;
+  title: string;
+  description: string;
+  /** Which side of the Portfolio/Reports switch this page belongs to. */
+  view: View;
+  /**
+   * Path of this page in the other language.
+   * - omitted: the other language's page for `view` (index pages).
+   * - null: no translation exists — the language toggle falls back to that
+   *   index, and no hreflang alternates are emitted.
+   */
+  translation?: string | null;
+}
+
+const { lang, title, description, view, translation = routes[view][otherLang(lang)] } = Astro.props;
+
+const other = otherLang(lang);
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const toggleHref = translation ?? routes[view][other];
+
+const alternates =
+  translation === null
+    ? []
+    : [
+        { lang, href: canonical.href },
+        { lang: other, href: new URL(translation, Astro.site).href },
+      ];
+const xDefault = alternates.find((a) => a.lang === 'pt');
+---
+
+<!doctype html>
+<html lang={htmlLang[lang]}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    {/*
+      Theme — the only client JS on the site. Inline and synchronous so data-theme
+      is set before first paint (a bundled module script is deferred and would
+      flash light). The click listener is delegated, so it can bind before the
+      header button exists.
+    */}
+    <script is:inline>
+      (() => {
+        const root = document.documentElement;
+        try {
+          if (localStorage.getItem('theme') === 'dark') root.dataset.theme = 'dark';
+        } catch {}
+        document.addEventListener('click', (event) => {
+          if (!(event.target instanceof Element) || !event.target.closest('[data-theme-toggle]')) return;
+          const dark = root.dataset.theme !== 'dark';
+          if (dark) root.dataset.theme = 'dark';
+          else delete root.dataset.theme;
+          try {
+            localStorage.setItem('theme', dark ? 'dark' : 'light');
+          } catch {}
+        });
+      })();
+    </script>
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {alternates.map((a) => <link rel="alternate" hreflang={htmlLang[a.lang]} href={a.href} />)}
+    {xDefault && <link rel="alternate" hreflang="x-default" href={xDefault.href} />}
+
+    <Font cssVariable="--font-barlow" preload={[{ weight: 400 }]} />
+    <Font cssVariable="--font-newsreader" preload />
+  </head>
+  <body>
+    <div class="shell">
+      <div class="column">
+        <Header lang={lang} toggleHref={toggleHref} />
+        <main>
+          <slot />
+        </main>
+        <Footer lang={lang} view={view} />
+      </div>
+    </div>
+  </body>
+</html>
+
+<style is:global>
+  /* Base inherited from the Industry stylesheet the prototype loads
+     (design_handoff_portfolio/industry-styles.css). Everything that doesn't set
+     its own line-height relies on the 1.55 here. */
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.55;
+    font-weight: 400;
+  }
+
+  /* Overscroll/rubber-band area matches the theme. */
+  html {
+    background: var(--bg);
+  }
+
+  /* Element-level rules from README § Interactions & Behavior. */
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+  a:hover {
+    color: var(--ink);
+  }
+  ::selection {
+    background: color-mix(in srgb, currentColor 18%, transparent);
+  }
+  :focus-visible {
+    outline: 1px solid var(--ink);
+    outline-offset: 3px;
+  }
+</style>
+
+<style>
+  .shell {
+    min-height: 100vh;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--font-body);
+    transition: background 0.3s ease, color 0.3s ease;
+  }
+  .column {
+    width: 100%;
+    max-width: 880px;
+    margin: 0 auto;
+    box-sizing: border-box;
+    padding: 0 clamp(22px, 5vw, 34px);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  main {
+    flex: 1 1 auto;
+  }
+</style>

@@ -1,0 +1,84 @@
+---
+import { otherLang, htmlLang, ui, type Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+  /** Same page in the other language (or its nearest index). */
+  toggleHref: string;
+}
+
+const { lang, toggleHref } = Astro.props;
+const other = otherLang(lang);
+---
+
+<header>
+  <span class="wordmark">faleir0x</span>
+  <div class="controls">
+    {/* A link, not a button: each language is its own static route. Label is the other language. */}
+    <a
+      class="lang"
+      href={toggleHref}
+      hreflang={htmlLang[other]}
+      lang={htmlLang[other]}
+      aria-label={ui[other].languageName}>{other.toUpperCase()}</a
+    >
+    <button type="button" class="theme" data-theme-toggle aria-label={ui[lang].themeLabel}>
+      <svg
+        width="15"
+        height="15"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        aria-hidden="true"
+        ><circle cx="12" cy="12" r="4"></circle><path
+          d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"
+        ></path></svg
+      >
+    </button>
+  </div>
+</header>
+
+<style>
+  header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 26px 0 0;
+    flex: none;
+  }
+  .wordmark {
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .controls {
+    display: flex;
+    align-items: baseline;
+    gap: 20px;
+    font-size: 15px;
+  }
+  .lang {
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 0.12em;
+  }
+  .theme {
+    background: none;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+    color: inherit;
+    opacity: 0.6;
+    display: flex;
+    align-self: center;
+  }
+  .theme:hover {
+    opacity: 1;
+  }
+</style>

@@ -1,0 +1,108 @@
+---
+import { reportsCopy } from '../i18n/reports';
+import { reportPath } from '../i18n/routes';
+import type { Lang } from '../i18n/ui';
+import { reportSlug, type Report } from '../lib/reports';
+import ReportMeta from './ReportMeta.astro';
+
+interface Props {
+  lang: Lang;
+  report: Report;
+}
+
+const { lang, report } = Astro.props;
+const { data } = report;
+const t = reportsCopy[lang];
+---
+
+<a class="card" href={reportPath(lang, reportSlug(report))}>
+  {/* Registration marks — Industry .blueprint > .corner, centered on the hairline. */}
+  <i class="corner tl" aria-hidden="true"></i>
+  <i class="corner tr" aria-hidden="true"></i>
+  <i class="corner bl" aria-hidden="true"></i>
+  <i class="corner br" aria-hidden="true"></i>
+  <div class="kicker">{t.featuredKicker}</div>
+  <h2>{data.title}</h2>
+  <p>{data.summary}</p>
+  <ReportMeta data={data}>{t.readLabel}</ReportMeta>
+</a>
+
+<style>
+  .card {
+    position: relative;
+    display: block;
+    padding: 24px 26px 22px;
+    border: 1px solid color-mix(in srgb, var(--ink) 40%, transparent);
+    border-radius: 0;
+  }
+  .card:hover {
+    border-color: var(--ink);
+  }
+
+  .corner {
+    position: absolute;
+    width: 11px;
+    height: 11px;
+    color: var(--ink);
+  }
+  .corner::before,
+  .corner::after {
+    content: "";
+    position: absolute;
+    background: currentColor;
+  }
+  .corner::before {
+    left: 5px;
+    top: 0;
+    width: 1px;
+    height: 100%;
+  }
+  .corner::after {
+    top: 5px;
+    left: 0;
+    width: 100%;
+    height: 1px;
+  }
+  .tl {
+    top: -6px;
+    left: -6px;
+  }
+  .tr {
+    top: -6px;
+    right: -6px;
+  }
+  .bl {
+    bottom: -6px;
+    left: -6px;
+  }
+  .br {
+    bottom: -6px;
+    right: -6px;
+  }
+
+  .kicker {
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink);
+    opacity: 0.9;
+  }
+  h2 {
+    margin: 10px 0 0;
+    font-family: var(--font-heading);
+    font-weight: 400;
+    font-size: 32px;
+    letter-spacing: -0.01em;
+    line-height: 1.1;
+  }
+  p {
+    margin: 10px 0 0;
+    max-width: 46em;
+    font-size: 15px;
+    line-height: 1.6;
+    opacity: 0.75;
+    text-wrap: pretty;
+  }
+</style>

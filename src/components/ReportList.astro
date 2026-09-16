@@ -1,0 +1,62 @@
+---
+import { reportPath } from '../i18n/routes';
+import type { Lang } from '../i18n/ui';
+import { reportSlug, reportSource, reportTopic, type Report } from '../lib/reports';
+
+interface Props {
+  lang: Lang;
+  reports: Report[];
+}
+
+const { lang, reports } = Astro.props;
+---
+
+<ul>
+  {
+    reports.map((report) => (
+      <li>
+        <a href={reportPath(lang, reportSlug(report))}>
+          <span class="name">{report.data.title}</span>
+          <span class="topic">{reportTopic(report.data)}</span>
+          <span class="source">{reportSource(report.data)}</span>
+        </a>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  ul {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  a {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px 16px;
+    align-items: baseline;
+    padding: 13px 0;
+    border-top: 1px solid color-mix(in srgb, currentColor 12%, transparent);
+  }
+  .name {
+    flex: 0 1 auto;
+    font-size: 16px;
+  }
+  .topic,
+  .source {
+    font-family: var(--font-body);
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0.7;
+  }
+  .topic {
+    flex: 1 1 auto;
+  }
+  .source {
+    white-space: nowrap;
+  }
+</style>

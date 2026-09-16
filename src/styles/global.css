@@ -1,0 +1,24 @@
+/* Design tokens — design_handoff_portfolio/README.md § Design Tokens.
+   Palette: Graphite (shipped default). Component styles live in scoped <style> blocks. */
+
+:root {
+  /* Native UI (scrollbars on overflowing code blocks, the page scrollbar) follows the theme. */
+  color-scheme: light;
+
+  --bg: #eceded;
+  --fg: #14161a;
+  --ink: #14161a;
+
+  /* --font-barlow / --font-newsreader are defined by <Font> (astro.config.mjs → fonts),
+     including the fallback stacks. */
+  --font-body: var(--font-barlow);
+  --font-heading: var(--font-newsreader);
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --bg: #14161a;
+  --fg: #e7e8ea;
+  --ink: #e7e8ea;
+}

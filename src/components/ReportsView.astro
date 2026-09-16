@@ -1,0 +1,38 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Masthead from './Masthead.astro';
+import FeaturedReport from './FeaturedReport.astro';
+import ReportList from './ReportList.astro';
+import { reportsCopy } from '../i18n/reports';
+import type { Lang } from '../i18n/ui';
+import { getReports } from '../lib/reports';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = reportsCopy[lang];
+const [latest, ...rest] = await getReports(lang);
+---
+
+<BaseLayout lang={lang} title={t.pageTitle} description={t.intro} view="reports">
+  <Masthead variant="reports" title={t.title} paragraphs={[t.intro]} />
+  {
+    latest && (
+      <div class="index">
+        <FeaturedReport lang={lang} report={latest} />
+        {rest.length > 0 && <ReportList lang={lang} reports={rest} />}
+      </div>
+    )
+  }
+</BaseLayout>
+
+<style>
+  .index {
+    display: flex;
+    flex-direction: column;
+    gap: 26px;
+    padding: 0 0 clamp(34px, 5vh, 52px);
+  }
+</style>

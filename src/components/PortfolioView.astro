@@ -1,0 +1,21 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Masthead from './Masthead.astro';
+import Experience from './Experience.astro';
+import Stack from './Stack.astro';
+import { portfolioCopy } from '../i18n/portfolio';
+import type { Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = portfolioCopy[lang];
+---
+
+<BaseLayout lang={lang} title={t.pageTitle} description={t.lead} view="portfolio">
+  <Masthead variant="portfolio" title="Cauê Faleiros" role={t.role} paragraphs={[t.lead, t.support]} />
+  <Experience lang={lang} />
+  <Stack lang={lang} />
+</BaseLayout>

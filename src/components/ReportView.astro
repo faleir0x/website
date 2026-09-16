@@ -1,0 +1,112 @@
+---
+import { render } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Masthead from './Masthead.astro';
+import ReportMeta from './ReportMeta.astro';
+import Band from './Band.astro';
+import Prose from './Prose.astro';
+import { factLabels, reportsCopy } from '../i18n/reports';
+import { reportPath, routes } from '../i18n/routes';
+import { otherLang, type Lang } from '../i18n/ui';
+import { isoDate, reportFacts, reportSlug, type Report } from '../lib/reports';
+
+interface Props {
+  lang: Lang;
+  report: Report;
+  hasTranslation: boolean;
+}
+
+const { lang, report, hasTranslation } = Astro.props;
+const { data } = report;
+const t = reportsCopy[lang];
+const facts = reportFacts(data, lang);
+const { Content } = await render(report);
+---
+
+<BaseLayout
+  lang={lang}
+  title={`${data.title} — ${t.title}`}
+  description={data.summary}
+  view="reports"
+  translation={hasTranslation ? reportPath(otherLang(lang), reportSlug(report)) : null}
+>
+  <article>
+    <Masthead variant="reports" title={data.title} paragraphs={[data.summary]}>
+      {/* PROPOSAL — back link, in the featured card's kicker treatment. */}
+      <a slot="kicker" class="back" href={routes.reports[lang]}>← {t.title}</a>
+      <ReportMeta data={data}>
+        <time datetime={isoDate(data.date)}>{isoDate(data.date)}</time>
+      </ReportMeta>
+    </Masthead>
+
+    <Band label={factLabels[lang].details}>
+      <dl>
+        {
+          facts.map((fact) => (
+            <>
+              <dt>{fact.label}</dt>
+              <dd class:list={{ anywhere: fact.breakAnywhere }}>
+                {fact.href ? (
+                  <a href={fact.href} target="_blank" rel="noopener">
+                    {fact.value}
+                  </a>
+                ) : (
+                  fact.value
+                )}
+              </dd>
+            </>
+          ))
+        }
+      </dl>
+    </Band>
+
+    <Prose>
+      <Content />
+    </Prose>
+  </article>
+</BaseLayout>
+
+<style>
+  .back {
+    display: block;
+    width: fit-content;
+    margin-bottom: 10px; /* kicker → title in the featured card */
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink);
+    opacity: 0.9;
+  }
+
+  /* Stack grid, except the label column fits its longest label (PROPOSAL: the
+     spec's 78px is sized for Stack's short labels). */
+  dl {
+    display: grid;
+    grid-template-columns: max-content minmax(0, 1fr);
+    gap: 12px 24px;
+    margin: 0;
+  }
+  dt {
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    opacity: 0.6;
+    padding-top: 3px;
+  }
+  dd {
+    min-width: 0;
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+  .anywhere {
+    overflow-wrap: anywhere;
+  }
+  dd a {
+    border-bottom: 1px solid var(--ink); /* contact-link treatment */
+  }
+</style>

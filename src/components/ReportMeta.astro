@@ -1,0 +1,34 @@
+---
+import { reportLevel, reportSource, reportTopic, type Report } from '../lib/reports';
+
+interface Props {
+  data: Report['data'];
+}
+
+const { data } = Astro.props;
+---
+
+<div class="meta">
+  <span>{reportSource(data)}</span>
+  <span>{reportLevel(data)}</span>
+  <span>{reportTopic(data)}</span>
+  {Astro.slots.has('default') && <span class="end"><slot /></span>}
+</div>
+
+<style>
+  /* README values (Barlow, .08em, .7); the prototype's heading-font/.12em/.6 is superseded. */
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 18px;
+    margin: 16px 0 0;
+    font-family: var(--font-body);
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0.7;
+  }
+  .end {
+    margin-left: auto;
+  }
+</style>
