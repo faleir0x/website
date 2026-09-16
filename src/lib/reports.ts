@@ -1,3 +1,4 @@
+import { readFile } from 'node:fs/promises';
 import { getCollection, type CollectionEntry } from 'astro:content';
 import { factLabels } from '../i18n/reports';
 import { htmlLang, otherLang, type Lang } from '../i18n/ui';
@@ -5,11 +6,19 @@ import { htmlLang, otherLang, type Lang } from '../i18n/ui';
 export type Report = CollectionEntry<'reports'>;
 type ReportData = Report['data'];
 
-/** Frontmatter keys that legitimately differ between translations. Everything else must match. */
-const LOCALIZED_KEYS = new Set(['lang', 'title', 'summary', 'topics']);
+/**
+ * Frontmatter keys that legitimately differ between translations. Everything else must match.
+ * `draft` is here so a translation can stay in draft after the original is published.
+ */
+const LOCALIZED_KEYS = new Set(['lang', 'title', 'summary', 'topics', 'draft']);
 
-/** "pt/blue" → "blue" */
-export const reportSlug = (entry: Report) => entry.id.slice(entry.id.indexOf('/') + 1);
+/** Placeholder written by `npm run new`; a published report may not contain it. */
+const PLACEHOLDER = 'FILL_ME';
+
+const SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+
+/** "blue/pt" → "blue" */
+export const reportSlug = (entry: Report) => entry.id.slice(0, entry.id.indexOf('/'));
 
 const neutralFields = (data: ReportData) =>
   JSON.stringify(
@@ -18,14 +27,23 @@ const neutralFields = (data: ReportData) =>
       .sort(([a], [b]) => a.localeCompare(b)),
   );
 
-function validate(entries: Report[]) {
+async function validate(entries: Report[]) {
   const bySlug = new Map<string, Report>();
   for (const entry of entries) {
-    const folder = entry.id.slice(0, entry.id.indexOf('/'));
-    if (folder !== entry.data.lang) {
-      throw new Error(`reports/${entry.id}: lang "${entry.data.lang}" does not match folder "${folder}/"`);
+    const file = entry.id.slice(entry.id.indexOf('/') + 1);
+    if (file !== entry.data.lang) {
+      throw new Error(`reports/${entry.id}: lang "${entry.data.lang}" does not match file "${file}.mdx"`);
     }
     const slug = reportSlug(entry);
+    if (!SLUG.test(slug)) {
+      throw new Error(`reports/${slug}/: folder name must be lowercase letters, digits and hyphens`);
+    }
+    if (!entry.data.draft && entry.filePath) {
+      const source = await readFile(entry.filePath, 'utf8');
+      if (source.includes(PLACEHOLDER)) {
+        throw new Error(`${entry.filePath}: still contains ${PLACEHOLDER} — fill it in or keep draft: true`);
+      }
+    }
     const pair = bySlug.get(slug);
     if (pair && neutralFields(pair.data) !== neutralFields(entry.data)) {
       throw new Error(
@@ -39,8 +57,8 @@ function validate(entries: Report[]) {
 let all: Promise<Report[]> | undefined;
 
 const loadAll = () =>
-  (all ??= getCollection('reports').then((entries) => {
-    validate(entries);
+  (all ??= getCollection('reports').then(async (entries) => {
+    await validate(entries);
     return entries;
   }));
 
@@ -79,14 +97,14 @@ export const reportTopic = (data: ReportData) => data.topics.join(' · ');
 /** ISO date (YYYY-MM-DD): unambiguous in both languages. Frontmatter dates are UTC midnight. */
 export const isoDate = (date: Date) => date.toISOString().slice(0, 10);
 
-/** getStaticPaths for /relatorios/[slug]/ and /en/reports/[slug]/. */
+/** getStaticPaths entries for /{lang}/reports/[slug]/. */
 export async function reportPaths(lang: Lang) {
   const reports = await getReports(lang);
   const others = await getReports(otherLang(lang));
   return reports.map((report) => {
     const slug = reportSlug(report);
     return {
-      params: { slug },
+      params: { lang, slug },
       props: { report, hasTranslation: others.some((o) => reportSlug(o) === slug) },
     };
   });

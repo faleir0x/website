@@ -1,7 +1,8 @@
-export const langs = ['pt', 'en'] as const;
+/** First entry is the default locale. */
+export const langs = ['en', 'pt'] as const;
 export type Lang = (typeof langs)[number];
 
-export const otherLang = (lang: Lang): Lang => (lang === 'pt' ? 'en' : 'pt');
+export const otherLang = (lang: Lang): Lang => (lang === 'en' ? 'pt' : 'en');
 
 /** BCP 47 tags for <html lang> and hreflang. */
 export const htmlLang: Record<Lang, string> = { pt: 'pt-BR', en: 'en' };

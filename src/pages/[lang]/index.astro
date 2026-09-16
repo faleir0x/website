@@ -1,0 +1,11 @@
+---
+import type { GetStaticPaths, InferGetStaticParamsType } from 'astro';
+import PortfolioView from '../../components/PortfolioView.astro';
+import { langs } from '../../i18n/ui';
+
+export const getStaticPaths = (() => langs.map((lang) => ({ params: { lang } }))) satisfies GetStaticPaths;
+
+const { lang } = Astro.params as InferGetStaticParamsType<typeof getStaticPaths>;
+---
+
+<PortfolioView lang={lang} />

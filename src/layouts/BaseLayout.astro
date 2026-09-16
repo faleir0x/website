@@ -2,8 +2,10 @@
 import { Font } from 'astro:assets';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import { htmlLang, otherLang, type Lang } from '../i18n/ui';
-import { routes, type View } from '../i18n/routes';
+import { htmlLang, langs, otherLang, type Lang } from '../i18n/ui';
+import { routes, rssPath, type View } from '../i18n/routes';
+import { reportsCopy } from '../i18n/reports';
+import themeScript from '../scripts/theme.js?raw';
 import '../styles/global.css';
 
 interface Props {
@@ -34,7 +36,7 @@ const alternates =
         { lang, href: canonical.href },
         { lang: other, href: new URL(translation, Astro.site).href },
       ];
-const xDefault = alternates.find((a) => a.lang === 'pt');
+const xDefault = alternates.find((a) => a.lang === langs[0]);
 ---
 
 <!doctype html>
@@ -42,35 +44,16 @@ const xDefault = alternates.find((a) => a.lang === 'pt');
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    {/*
-      Theme — the only client JS on the site. Inline and synchronous so data-theme
-      is set before first paint (a bundled module script is deferred and would
-      flash light). The click listener is delegated, so it can bind before the
-      header button exists.
-    */}
-    <script is:inline>
-      (() => {
-        const root = document.documentElement;
-        try {
-          if (localStorage.getItem('theme') === 'dark') root.dataset.theme = 'dark';
-        } catch {}
-        document.addEventListener('click', (event) => {
-          if (!(event.target instanceof Element) || !event.target.closest('[data-theme-toggle]')) return;
-          const dark = root.dataset.theme !== 'dark';
-          if (dark) root.dataset.theme = 'dark';
-          else delete root.dataset.theme;
-          try {
-            localStorage.setItem('theme', dark ? 'dark' : 'light');
-          } catch {}
-        });
-      })();
-    </script>
+    {/* Theme script: see src/scripts/theme.js. Inline + synchronous = no light flash. */}
+    <script is:inline set:html={themeScript} />
 
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
     {alternates.map((a) => <link rel="alternate" hreflang={htmlLang[a.lang]} href={a.href} />)}
     {xDefault && <link rel="alternate" hreflang="x-default" href={xDefault.href} />}
+    <link rel="alternate" type="application/rss+xml" title={reportsCopy[lang].pageTitle} href={rssPath(lang)} />
+    <link rel="sitemap" href="/sitemap-index.xml" />
 
     <Font cssVariable="--font-barlow" preload={[{ weight: 400 }]} />
     <Font cssVariable="--font-newsreader" preload />

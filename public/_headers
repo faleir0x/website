@@ -1,0 +1,16 @@
+# Cloudflare Pages response headers.
+# script-src/style-src are per-page hashes in a <meta> CSP (astro.config.mjs → security.csp);
+# this header adds what <meta> cannot express. Browsers enforce both policies.
+/*
+  Content-Security-Policy: frame-ancestors 'none'; object-src 'none'; base-uri 'none'
+  Strict-Transport-Security: max-age=63072000; includeSubDomains
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=(), interest-cohort=()
+  Cross-Origin-Opener-Policy: same-origin
+  Cross-Origin-Resource-Policy: same-origin
+
+# Fingerprinted build assets never change.
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable

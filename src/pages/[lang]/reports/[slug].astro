@@ -1,0 +1,13 @@
+---
+import type { GetStaticPaths, InferGetStaticParamsType, InferGetStaticPropsType } from 'astro';
+import ReportView from '../../../components/ReportView.astro';
+import { langs } from '../../../i18n/ui';
+import { reportPaths } from '../../../lib/reports';
+
+export const getStaticPaths = (async () => (await Promise.all(langs.map(reportPaths))).flat()) satisfies GetStaticPaths;
+
+const { lang } = Astro.params as InferGetStaticParamsType<typeof getStaticPaths>;
+const { report, hasTranslation } = Astro.props as InferGetStaticPropsType<typeof getStaticPaths>;
+---
+
+<ReportView lang={lang} report={report} hasTranslation={hasTranslation} />

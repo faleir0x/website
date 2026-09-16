@@ -30,8 +30,8 @@ const profiles = [
       </a>
     ))
   }
-  {/* Resume destination pending — README § Known gaps. */}
-  <a class="secondary" href="#">{t.cv}</a>
+  {/* /resume/ redirects to the PDF (public/_redirects). */}
+  <a class="secondary" href="/resume/">{t.cv}</a>
   <a class="switch" href={routes[target][lang]}>{t[target]}</a>
 </footer>
 

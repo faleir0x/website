@@ -1,0 +1,6 @@
+# Cloudflare Pages redirects — applied before static files.
+/          /en/          301
+/reports   /en/reports/  301
+/reports/* /en/reports/:splat 301
+/resume    /resume.pdf   302
+/resume/   /resume.pdf   302

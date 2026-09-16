@@ -1,19 +1,21 @@
 import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
+import { langs } from './i18n/ui';
 
 /*
- * One collection, one MDX file per (write-up, language):
- *   src/content/reports/pt/blue.mdx  → id "pt/blue"
- *   src/content/reports/en/blue.mdx  → id "en/blue"
- * Flat per language: the filename is the URL slug, and translations pair by it.
- * `lang` is repeated in frontmatter so it is validated here and filterable
- * without parsing ids.
+ * One folder per write-up, one MDX file per language, images alongside:
+ *   src/content/reports/blue/en.mdx      → id "blue/en"
+ *   src/content/reports/blue/pt.mdx      → id "blue/pt"  (optional translation)
+ *   src/content/reports/blue/nmap.png    → ![Nmap scan](./nmap.png)
+ * The folder name is the URL slug. `lang` is repeated in frontmatter so it is
+ * validated here and filterable without parsing ids.
+ * Scaffold with `npm run new <slug> <room|ctf|disclosure>` (scripts/report.mjs).
  */
 
 // Strict: a key from another kind (e.g. `cvss` on a room) is an error, not silently dropped.
 const base = z.strictObject({
-  lang: z.enum(['pt', 'en']),
+  lang: z.enum(langs),
   title: z.string().min(1),
   // Featured-card summary and <meta name="description">.
   summary: z.string().min(1),
@@ -86,7 +88,7 @@ const disclosure = base.extend({
 });
 
 const reports = defineCollection({
-  loader: glob({ pattern: '{pt,en}/*.mdx', base: './src/content/reports' }),
+  loader: glob({ pattern: '*/{en,pt}.mdx', base: './src/content/reports' }),
   schema: z.discriminatedUnion('kind', [room, ctf, disclosure]),
 });
 
