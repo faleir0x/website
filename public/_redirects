@@ -2,5 +2,12 @@
 /          /en/          301
 /reports   /en/reports/  301
 /reports/* /en/reports/:splat 301
-/resume    /resume.pdf   302
-/resume/   /resume.pdf   302
+
+# One resume per language: public/en/resume.pdf, public/pt/resume.pdf.
+# While a PDF is missing, the nearest 404.html answers in that language.
+/en/resume   /en/resume.pdf  302
+/en/resume/  /en/resume.pdf  302
+/pt/resume   /pt/resume.pdf  302
+/pt/resume/  /pt/resume.pdf  302
+/resume      /en/resume.pdf  302
+/resume/     /en/resume.pdf  302

@@ -34,7 +34,7 @@ const profiles = [
       </a>
     ))
   }
-  <a href="/resume/">{t.cv}</a>
+  <a href={`/${lang}/resume/`}>{t.cv}</a>
 </nav>
 
 <footer>
@@ -46,8 +46,8 @@ const profiles = [
       </a>
     ))
   }
-  {/* /resume/ redirects to the PDF (public/_redirects). */}
-  <a class="secondary" href="/resume/">{t.cv}</a>
+  {/* /{lang}/resume/ redirects to public/{lang}/resume.pdf (public/_redirects). */}
+  <a class="secondary" href={`/${lang}/resume/`}>{t.cv}</a>
   <a class="switch" href={routes[target][lang]}>{t[target]}</a>
 </footer>
 
