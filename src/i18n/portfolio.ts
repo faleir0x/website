@@ -5,16 +5,16 @@ type Localized = Record<Lang, string>;
 export const portfolioCopy = {
   pt: {
     role: 'Segurança Ofensiva',
-    lead: 'Atuo em segurança ofensiva, com foco em testes de intrusão em aplicações web e APIs. Meu trabalho consiste em identificar vulnerabilidades, desde o OWASP Top 10 até abusos complexos de lógica de negócio, explorar a falha até uma prova de conceito (PoC) funcional e escrever a correção a nível de código.',
-    support: 'Minha abordagem é guiada pela minha experiência como desenvolvedor full-stack. Por ter atuado diretamente na construção, manutenção e deploy dos sistemas que hoje testo, lidando com autenticação, proxies reversos e logs centralizados, compreendo como esses ambientes funcionam em produção. Essa visão de quem constrói me permite enxergar falhas arquiteturais que ferramentas automatizadas ignoram e entregar correções precisas para as equipes de engenharia.',
+    lead: 'Tenho foco em segurança ofensiva, principalmente pentest em aplicações web e APIs. Gosto de levar a falha até o fim: encontrar, provar que funciona e descobrir como corrigir.',
+    support: 'Cheguei à segurança vindo do desenvolvimento, então passei bastante tempo construindo o tipo de sistema que hoje tento quebrar, e isso ainda guia a forma como procuro bugs. Estudo todos os dias com labs e CTFs, e publico write-ups aqui conforme avanço.',
     experienceLabel: 'Experiência',
     stackLabel: 'Stack',
     nowLabel: 'Atual',
   },
   en: {
     role: 'Offensive Security',
-    lead: 'I focus on offensive security, specifically web application and API penetration testing. My work involves uncovering vulnerabilities, from OWASP Top 10 to business-logic abuse, developing functional proofs of concept, and writing the code to fix them.',
-    support: "My approach is rooted in my background as a full-stack developer. Because I have hands-on experience building, deploying, and maintaining the systems I now test, including authentication controls, reverse proxies, and centralized logging, I know how these environments are structured in production. This builder's perspective allows me to spot architectural blind spots that automated tools miss and provide practical, dev-ready remediations.",
+    lead: "I'm focused on offensive security, mainly web application and API pentesting. I like taking a bug all the way: finding it, proving it works, and figuring out how to fix it.",
+    support: "I came to security from software development, so I've spent a lot of time building the kind of systems I now try to break, and that still shapes how I hunt for bugs. I study every day with labs and CTFs, and I publish write-ups here as I go.",
     experienceLabel: 'Experience',
     stackLabel: 'Stack',
     nowLabel: 'Present',
