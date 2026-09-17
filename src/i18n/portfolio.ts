@@ -78,7 +78,7 @@ export const experience: Employer[] = [
 export interface StackRow {
   label: string;
   items: string[] | Record<Lang, string[]>;
-  /** Rendered at opacity .7 (the Certs row). */
+  /** Rendered at opacity .7, e.g. for a certifications row. */
   muted?: boolean;
 }
 
@@ -89,12 +89,4 @@ export const stack: StackRow[] = [
   },
   { label: 'Scripting', items: ['Python', 'Go', 'Bash', 'PowerShell', 'SQL'] },
   { label: 'Infra', items: ['Docker', 'Grafana', 'Prometheus', 'Loki', 'CI/CD', 'GCP'] },
-  {
-    label: 'Certs',
-    items: {
-      pt: ['eJPT (INE) — em estudo', 'PNPT (TCM Security) — planejada'],
-      en: ['eJPT (INE) — studying', 'PNPT (TCM Security) — planned'],
-    },
-    muted: true,
-  },
 ];
