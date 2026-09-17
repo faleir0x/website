@@ -1,0 +1,10 @@
+---
+// Links inside write-up bodies (passed to <Content components={{ a }} />): external
+// addresses open in a new tab with rel="noopener"; this site's own pages, anchors and
+// mailto: stay as normal links.
+const { href, ...rest } = Astro.props;
+const url = typeof href === 'string' && /^https?:\/\//i.test(href) ? new URL(href) : null;
+const external = url !== null && url.hostname !== 'faleir0x.com';
+---
+
+<a href={href} {...rest} {...external ? { target: '_blank', rel: 'noopener' } : {}}><slot /></a>

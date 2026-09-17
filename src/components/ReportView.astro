@@ -5,6 +5,7 @@ import Masthead from './Masthead.astro';
 import ReportMeta from './ReportMeta.astro';
 import Band from './Band.astro';
 import Prose from './Prose.astro';
+import ProseLink from './ProseLink.astro';
 import { factLabels, reportsCopy } from '../i18n/reports';
 import { reportPath, routes } from '../i18n/routes';
 import { otherLang, type Lang } from '../i18n/ui';
@@ -62,7 +63,7 @@ const { Content } = await render(report);
     </Band>
 
     <Prose>
-      <Content />
+      <Content components={{ a: ProseLink }} />
     </Prose>
   </article>
 </BaseLayout>
