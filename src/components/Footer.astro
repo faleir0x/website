@@ -88,17 +88,22 @@ const profiles = [
   /* Below this width the full row no longer fits on one line. */
   @media (max-width: 759px) {
     /* One row: email on the left; resume and view switch together on the right.
-       14px from 350px down so it still fits a 320px screen. */
+       Type and spacing tighten on narrow screens so the longest labels
+       (PT: Currículo + Relatórios) still fit at 320px. */
     footer {
       flex-wrap: nowrap;
-      gap: 14px;
+      gap: clamp(11px, 3.8vw, 16px);
       font-size: clamp(14px, 4.3vw, 15px);
     }
     .secondary:not(.resume) {
       display: none;
     }
+    /* Highlighted like the view switch. */
     .resume {
       margin-left: auto;
+      opacity: 1;
+      color: var(--ink);
+      border-bottom: 1px solid var(--ink);
     }
     .switch {
       margin-left: 0;
