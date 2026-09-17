@@ -15,7 +15,7 @@
   --font-heading: var(--font-newsreader);
 }
 
-/* Dark: chosen with the toggle (data-theme, set by src/scripts/theme.js), or the
+/* Dark: chosen with the toggle (data-theme, set by src/scripts/preferences.js), or the
    device preference when JavaScript is off and no attribute is set. Keep both
    blocks identical. */
 :root[data-theme="dark"] {

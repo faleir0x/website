@@ -5,7 +5,7 @@ import Footer from '../components/Footer.astro';
 import { htmlLang, langs, otherLang, type Lang } from '../i18n/ui';
 import { routes, rssPath, type View } from '../i18n/routes';
 import { reportsCopy } from '../i18n/reports';
-import themeScript from '../scripts/theme.js?raw';
+import preferencesScript from '../scripts/preferences.js?raw';
 import '../styles/global.css';
 
 interface Props {
@@ -58,8 +58,8 @@ const xDefault = alternates.find((a) => a.lang === langs[0]);
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    {/* Theme script: see src/scripts/theme.js. Inline + synchronous = no light flash. */}
-    <script is:inline set:html={themeScript} />
+    {/* Theme and language preferences: see src/scripts/preferences.js. Inline + synchronous = no light flash. */}
+    <script is:inline set:html={preferencesScript} />
 
     <title>{title}</title>
     <link rel="icon" href="/favicon.ico" sizes="32x32" />

@@ -1,4 +1,42 @@
 ---
-// Cloudflare serves a real 301 from public/_redirects before this file is reached.
-return Astro.redirect('/en/', 301);
+// "/" picks the language in the browser (src/scripts/language.js) and replaces
+// itself with /en/ or /pt/. Without JavaScript, the <noscript> refresh goes to English.
+import languageScript from '../scripts/language.js?raw';
+import preferencesScript from '../scripts/preferences.js?raw';
+import '../styles/global.css';
 ---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>faleir0x</title>
+    <script is:inline set:html={languageScript} />
+    <noscript><meta http-equiv="refresh" content="0; url=/en/" /></noscript>
+    {/* Theme colors for the instant before the redirect, so dark mode doesn't flash light. */}
+    <script is:inline set:html={preferencesScript} />
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  </head>
+  <body>
+    <p><a href="/en/">English</a> · <a href="/pt/" lang="pt-BR">Português</a></p>
+  </body>
+</html>
+
+<style is:global>
+  html {
+    background: var(--bg);
+    color: var(--fg);
+  }
+  body {
+    margin: 0;
+    padding: 26px clamp(22px, 5vw, 34px);
+    font-family: system-ui, sans-serif;
+    font-size: 15px;
+  }
+  a {
+    color: inherit;
+  }
+</style>
