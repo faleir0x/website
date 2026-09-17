@@ -45,8 +45,8 @@ const profiles = [
       </a>
     ))
   }
-  {/* /{lang}/resume/ redirects to public/{lang}/resume.pdf (public/_redirects). */}
-  <a class="secondary resume" href={`/${lang}/resume/`}>{t.cv}</a>
+  {/* /{lang}/resume/ redirects to public/{lang}/resume.pdf (public/_redirects). Opens in a new tab. */}
+  <a class="secondary resume" href={`/${lang}/resume/`} target="_blank" rel="noopener">{t.cv}</a>
   <a class="switch" href={routes[target][lang]}>{t[target]}</a>
 </footer>
 
