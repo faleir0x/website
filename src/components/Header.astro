@@ -22,8 +22,22 @@ const other = otherLang(lang);
       lang={htmlLang[other]}
       aria-label={ui[other].languageName}>{other.toUpperCase()}</a
     >
+    {/* Shows the mode you switch to, like the language link: moon in light, sun in dark. */}
     <button type="button" class="theme" data-theme-toggle aria-label={ui[lang].themeLabel}>
       <svg
+        class="icon-moon"
+        width="15"
+        height="15"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg
+      >
+      <svg
+        class="icon-sun"
         width="15"
         height="15"
         viewBox="0 0 24 24"
@@ -80,5 +94,23 @@ const other = otherLang(lang);
   }
   .theme:hover {
     opacity: 1;
+  }
+  /* Light: moon. Dark (toggled, or the device preference without JS): sun. */
+  .icon-sun {
+    display: none;
+  }
+  :global(:root[data-theme="dark"]) .icon-moon {
+    display: none;
+  }
+  :global(:root[data-theme="dark"]) .icon-sun {
+    display: block;
+  }
+  @media (prefers-color-scheme: dark) {
+    :global(:root:not([data-theme])) .icon-moon {
+      display: none;
+    }
+    :global(:root:not([data-theme])) .icon-sun {
+      display: block;
+    }
   }
 </style>
