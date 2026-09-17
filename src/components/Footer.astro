@@ -22,11 +22,11 @@ const profiles = [
 ---
 
 {/*
-  Phones: the sticky bar keeps only the email and the view switch; profile and
-  resume links sit in this grid at the end of the page instead. Desktop shows
-  everything in the sticky bar and hides this grid.
+  Phones: the sticky bar keeps the email, resume and view switch; the profile
+  links sit in this row at the end of the page instead. Desktop shows everything
+  in the sticky bar and hides this row.
 */}
-<nav class="links-grid" aria-label="Links">
+<nav class="profiles" aria-label="Profiles">
   {
     profiles.map((p) => (
       <a href={p.href} target="_blank" rel="noopener">
@@ -34,7 +34,6 @@ const profiles = [
       </a>
     ))
   }
-  <a href={`/${lang}/resume/`}>{t.cv}</a>
 </nav>
 
 <footer>
@@ -47,7 +46,7 @@ const profiles = [
     ))
   }
   {/* /{lang}/resume/ redirects to public/{lang}/resume.pdf (public/_redirects). */}
-  <a class="secondary" href={`/${lang}/resume/`}>{t.cv}</a>
+  <a class="secondary resume" href={`/${lang}/resume/`}>{t.cv}</a>
   <a class="switch" href={routes[target][lang]}>{t[target]}</a>
 </footer>
 
@@ -82,35 +81,44 @@ const profiles = [
     border-bottom: 1px solid var(--ink);
   }
 
-  .links-grid {
+  .profiles {
     display: none;
   }
 
   /* Below this width the full row no longer fits on one line. */
   @media (max-width: 759px) {
+    /* One row: email on the left; resume and view switch together on the right.
+       14px from 350px down so it still fits a 320px screen. */
     footer {
       flex-wrap: nowrap;
-      gap: 16px;
+      gap: 14px;
+      font-size: clamp(14px, 4.3vw, 15px);
     }
-    .secondary {
+    .secondary:not(.resume) {
       display: none;
     }
-
-    /* Section-rule pattern; three aligned columns. */
-    .links-grid {
-      flex: none;
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 12px 16px;
-      padding: 26px 0 30px;
-      border-top: 1px solid color-mix(in srgb, currentColor 16%, transparent);
-      font-size: 15px;
+    .resume {
+      margin-left: auto;
     }
-    .links-grid a {
-      width: fit-content;
+    .switch {
+      margin-left: 0;
+    }
+
+    /* Section-rule pattern; the four profiles spread across one line. */
+    .profiles {
+      flex: none;
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 22px 0 26px;
+      border-top: 1px solid color-mix(in srgb, currentColor 16%, transparent);
+      font-size: clamp(14px, 4.3vw, 15px);
+    }
+    .profiles a {
+      white-space: nowrap;
       opacity: 0.7;
     }
-    .links-grid a:hover {
+    .profiles a:hover {
       opacity: 1;
     }
   }
