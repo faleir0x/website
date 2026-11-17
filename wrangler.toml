@@ -1,0 +1,11 @@
+# Cloudflare Pages: configuração do projeto, versionada aqui.
+# Com este arquivo, o painel mostra estes campos mas não deixa editar (o arquivo manda).
+# Os segredos do Spotify NÃO entram aqui: ficam no painel (Settings → Variables and Secrets) e,
+# localmente, no .dev.vars (fora do Git). Veja README.md → Deploy.
+
+# Nome do projeto no Cloudflare Pages (precisa ser o mesmo do painel)
+name = "website"
+# Saída do `next build` (export estático)
+pages_build_output_dir = "out"
+# Versão do runtime das Functions; suba de propósito, nunca automático
+compatibility_date = "2026-10-01"

@@ -1,27 +1,36 @@
 {
   "name": "faleir0x",
-  "type": "module",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "astro dev",
-    "build": "astro check && astro build",
-    "preview": "astro preview",
-    "astro": "astro",
-    "new": "node scripts/report.mjs new",
-    "translate": "node scripts/report.mjs translate"
+    "dev": "next dev --port 3000",
+    "build": "next build && node scripts/csp.mjs",
+    "preview": "pnpm build && wrangler pages dev --port 8788 --ip 127.0.0.1",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "check": "pnpm typecheck && pnpm test",
+    "spines": "node scripts/build-spines.mjs",
+    "covers": "python3 -I scripts/build-books.py",
+    "spotify:token": "node scripts/spotify-token.mjs"
   },
   "dependencies": {
-    "@astrojs/mdx": "^8.0.1",
-    "@astrojs/rss": "^4.0.19",
-    "@astrojs/sitemap": "^3.7.4",
-    "astro": "^7.3.2"
+    "motion": "14.9.0",
+    "next": "16.4.5",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "simple-icons": "16.36.0"
   },
   "devDependencies": {
-    "@astrojs/check": "^0.9.10",
-    "typescript": "^5.9.3"
+    "@types/node": "24.9.1",
+    "@types/react": "19.2.2",
+    "@types/react-dom": "19.2.2",
+    "opentype.js": "2.0.0",
+    "typescript": "6.0.3",
+    "vitest": "5.0.5",
+    "wrangler": "4.156.2"
   },
+  "packageManager": "pnpm@11.26.0",
   "engines": {
-    "node": ">=22.12.0"
+    "node": ">=22"
   }
 }

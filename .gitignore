@@ -1,6 +1,24 @@
-dist/
-.astro/
-node_modules/
-.env
-.env.*
-.DS_Store
+node_modules
+.next
+out
+*.tsbuildinfo
+next-env.d.ts
+.env*.local
+.dev.vars
+.wrangler
+
+# Material de trabalho que fica só na máquina (não entra no build nem no deploy):
+# originais de imagem e fontes, referências e playgrounds de design
+/assets/
+/refs/
+/design-explorations/
+/.claude/
+# documentação, testes e ferramentas de uso local
+/*.md
+!/README.md
+/docs/
+/.dev.vars.example
+/vitest.config.ts
+*.test.ts
+/scripts/*
+!/scripts/csp.mjs

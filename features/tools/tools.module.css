@@ -1,0 +1,47 @@
+/* Ferramentas: grade de ícones com o nome em balão */
+.tools {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-6);
+  padding: var(--space-12);
+  list-style: none;
+  margin: 0;
+}
+.tool { position: relative; outline-offset: 2px; }
+.tip {
+  position: absolute;
+  bottom: calc(100% + var(--space-6));
+  left: 50%;
+  z-index: 5;
+  padding: 3px var(--space-8);
+  border-radius: 6px;
+  background: var(--color-inverse-bg);
+  color: var(--color-inverse-text);
+  font: var(--text-micro);
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-50%, 2px);
+  transition: opacity var(--dur-press) var(--ease-hover), transform var(--dur-hover) var(--ease-out);
+}
+.tool:focus-visible .tip { opacity: 1; transform: translate(-50%, 0); }
+.tools li {
+  border-radius: var(--radius-inner);
+  background: var(--color-bg-raised);
+  display: grid;
+  place-items: center;
+  font: var(--text-micro);
+  color: var(--color-text-secondary);
+  transition: transform var(--dur-playful) var(--ease-spring), color var(--dur-hover) var(--ease-hover);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .tool:hover .tip { opacity: 1; transform: translate(-50%, 0); }
+  .tools li:hover { transform: translateY(-3px) rotate(-5deg); color: var(--color-text); }
+  .tools li:hover .tip { transform: translate(-50%, 0) rotate(5deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tools li:hover { transform: none; }
+}

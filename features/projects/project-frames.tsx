@@ -1,0 +1,40 @@
+"use client";
+
+import { projects } from "@/content/projects";
+import { ui } from "@/content/ui";
+import { useI18n, type Localized } from "@/lib/i18n/i18n";
+import { Frame, Placeholder } from "@/features/sheet/frame";
+import { fillRows } from "./fill-rows";
+
+/** Um projeto da folha. Veja content/projects.ts para adicionar. */
+export type Project = {
+  title: string;
+  /** O que é, em poucas palavras (“agente de IA”): vai no nome acessível do quadro */
+  kind: Localized;
+  /** soon: o quadro aparece como “em breve”, sem link e sem imagem */
+  status: "live" | "soon";
+  /** Thumbnail em /public (ex.: "/projects/meu-projeto.webp"). Sem imagem, o quadro mostra o placeholder */
+  image?: string;
+  /** Destino do clique. Sem href o quadro não é link (DESIGN.md §6) */
+  href?: string;
+};
+
+/* As linhas de projetos da folha: um quadro por projeto, completando a última linha com “em breve”. */
+export function ProjectFrames() {
+  const { t } = useI18n();
+  return fillRows(projects).map((p, i) => {
+    if (!p || p.status === "soon") {
+      const title = p?.title ?? t(ui.nextProject);
+      return (
+        <Frame key={`p${i}`} label={`${title}, ${t(ui.soon)}`} title={title}>
+          <Placeholder label={t(ui.soon)} />
+        </Frame>
+      );
+    }
+    return (
+      <Frame key={`p${i}`} href={p.href} newTab={t(ui.newTab)} label={`${p.title}, ${t(p.kind)}`} title={p.title}>
+        {p.image ? <img src={p.image} alt="" loading="lazy" /> : <Placeholder label={t(ui.imgProject)} />}
+      </Frame>
+    );
+  });
+}

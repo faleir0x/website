@@ -1,0 +1,51 @@
+/* Margem da folha: cidade · hora e o par idioma/tema */
+.where { display: flex; align-items: center; gap: var(--space-6); margin: 0; }
+.where time { color: var(--color-text); }
+.clock { font-variant-numeric: tabular-nums; }
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+.pillGroup { position: relative; display: inline-flex; gap: 2px; }
+/* indicador do idioma: desliza entre PT e EN (só transform) */
+.ind {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  border-radius: var(--radius-pill);
+  background: var(--color-bg-raised);
+  box-shadow: var(--shadow-lift);
+  pointer-events: none;
+}
+.indReady { transition: transform var(--dur-hover) var(--ease-out); }
+
+.pill button {
+  position: relative;
+  z-index: 1;
+  border: 0;
+  background: transparent;
+  padding: 3px 9px;
+  border-radius: var(--radius-pill);
+  font: var(--text-micro);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  display: inline-grid;
+  place-items: center;
+  transition: background-color var(--dur-hover) var(--ease-hover), color var(--dur-hover) var(--ease-hover), transform var(--dur-press) var(--ease-out);
+}
+.pill button:active { transform: scale(var(--press-scale)); }
+/* área de toque maior que o botão (R7) */
+.pill button::after { content: ""; position: absolute; inset: calc(var(--space-6) * -1) 0; }
+.pill button[aria-pressed="true"] { color: var(--color-text); }
+.pill > button[aria-pressed="true"] { background: transparent; }
+.pillSep { width: 1px; height: 14px; background: var(--color-border); margin: 0 2px; }
+
+@media (hover: hover) and (pointer: fine) {
+  .pill button:not([aria-pressed="true"]):hover { color: var(--color-text); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .indReady { transition: none; }
+}

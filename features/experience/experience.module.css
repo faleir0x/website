@@ -1,0 +1,43 @@
+/* Experiência: a última linha inteira da folha, em tiras (uma por emprego) */
+.tiles { position: absolute; inset: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-8); padding: var(--space-12); list-style: none; margin: 0; }
+.tiles > li { display: contents; }
+.tile {
+  position: relative;
+  min-width: 0;
+  border: 0;
+  border-radius: var(--radius-inner);
+  background: var(--color-bg-raised);
+  cursor: pointer;
+  text-align: start;
+  overflow: hidden;
+  font: var(--text-caption);
+  color: var(--color-text);
+}
+.tileFace, .tileBack {
+  position: absolute;
+  inset: var(--space-16);
+  display: grid;
+  transition: opacity var(--dur-hover) var(--ease-hover), transform var(--dur-lift) var(--ease-out);
+}
+.tileFace { align-content: space-between; }
+.tileFace time { color: var(--color-text-secondary); font-variant-numeric: tabular-nums; }
+.tileRole { display: block; font: var(--text-body-strong); line-height: 1.3; }
+.tileCo { display: block; color: var(--color-text-secondary); margin-top: var(--space-4); }
+.nowDot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--color-live); margin-right: var(--space-6); vertical-align: 1px; }
+.tileBack { grid-template-rows: 1fr auto; gap: var(--space-12); opacity: 0; transform: translateY(var(--rise-support)); }
+.tileSum { line-height: 1.5; }
+.tileStacks { display: flex; gap: var(--space-12); align-items: center; min-height: 18px; color: var(--color-text-secondary); }
+/* virar: toque/clique (data-open) e foco valem em qualquer ponteiro; hover só com mouse (abaixo) */
+.tile[data-open] .tileFace, .tile:focus-visible .tileFace { opacity: 0; transform: translateY(calc(var(--rise-support) * -1)); }
+.tile[data-open] .tileBack, .tile:focus-visible .tileBack { opacity: 1; transform: translateY(0); }
+
+@media (hover: hover) and (pointer: fine) {
+  .tile:hover .tileFace { opacity: 0; transform: translateY(calc(var(--rise-support) * -1)); }
+  .tile:hover .tileBack { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 720px) {
+  .tiles { position: relative; inset: auto; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-6); padding: var(--space-8); }
+  /* altura que cabe o resumo inteiro na largura do celular: virar nunca corta texto (R3) */
+  .tile { min-height: 236px; }
+}

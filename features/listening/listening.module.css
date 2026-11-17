@@ -1,0 +1,23 @@
+/* Ouvindo: cartão da faixa sobre a capa */
+.np {
+  position: absolute;
+  left: var(--space-8);
+  right: var(--space-8);
+  bottom: var(--space-8);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  padding: var(--space-8) var(--space-12);
+  border-radius: var(--radius-inner);
+  background: color-mix(in oklch, var(--color-bg-raised) 92%, transparent);
+  font: var(--text-caption);
+}
+/* faixa · artista corta com reticências; o nome completo está no aria-label do quadro (R3) */
+.np b { flex: 1; min-width: 0; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+/* atribuição pedida pelas regras da Spotify: ícone monocromático, cor secundária */
+.np svg { flex: none; color: var(--color-text-secondary); }
+
+@media (max-width: 720px) {
+  .np b { white-space: normal; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+}

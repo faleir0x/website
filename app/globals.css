@@ -1,0 +1,216 @@
+/* Tokens: DESIGN.md §2–4. Componentes usam só --color-*, --text-*, --space-*, --radius-*, --ease-*. */
+:root {
+  --gray-990: oklch(0.99 0 0);
+  --gray-975: oklch(0.975 0 0);
+  --gray-955: oklch(0.955 0 0);
+  --gray-935: oklch(0.935 0 0);
+  --gray-925: oklch(0.925 0 0);
+  --gray-895: oklch(0.895 0 0);
+  --gray-800: oklch(0.8 0 0);
+  --gray-700: oklch(0.7 0 0);
+  --gray-620: oklch(0.62 0 0);
+  --gray-560: oklch(0.56 0 0);
+  --gray-495: oklch(0.495 0 0);
+  --gray-400: oklch(0.4 0 0);
+  --gray-290: oklch(0.29 0 0);
+  --gray-265: oklch(0.265 0 0);
+  --gray-235: oklch(0.235 0 0);
+  --gray-225: oklch(0.225 0 0);
+  --gray-198: oklch(0.198 0 0);
+  --gray-165: oklch(0.165 0 0);
+  --green-575: oklch(0.575 0.15 150);
+  --green-740: oklch(0.74 0.15 150);
+  --sage-820: oklch(0.82 0.045 148);
+  --sage-400: oklch(0.4 0.045 148);
+
+  --color-bg: var(--gray-975);
+  --color-bg-surface: var(--gray-955);
+  --color-bg-raised: var(--gray-990);
+  --color-bg-fill: var(--gray-925);
+  --color-border: var(--gray-895);
+  --color-border-strong: var(--gray-800);
+  --color-text: var(--gray-225);
+  --color-text-secondary: var(--gray-495);
+  --color-icon-subtle: var(--gray-620);
+  --color-inverse-bg: var(--gray-225);
+  --color-inverse-text: var(--gray-975);
+  --color-live: var(--green-575);
+  --color-placeholder: var(--sage-820);
+  --color-placeholder-text: var(--sage-400);
+  --shadow-lift: 0 1px 2px oklch(0 0 0 / 0.06), 0 12px 28px -14px oklch(0 0 0 / 0.24);
+
+  --font-sans: var(--font-familjen), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --text-display: 500 2.25rem/1.1 var(--font-sans);
+  --track-display: -0.02em;
+  --text-title: 500 1.5rem/1.2 var(--font-sans);
+  --track-title: -0.015em;
+  --text-body: 400 1rem/1.55 var(--font-sans);
+  --text-body-strong: 500 1rem/1.55 var(--font-sans);
+  --text-body-sm: 400 0.875rem/1.5 var(--font-sans);
+  --text-caption: 400 0.8125rem/1.45 var(--font-sans);
+  --text-micro: 400 0.75rem/1.4 var(--font-sans);
+
+  --space-4: 4px;
+  --space-6: 6px;
+  --space-8: 8px;
+  --space-12: 12px;
+  --space-16: 16px;
+  --space-24: 24px;
+  --space-28: 28px;
+  --space-32: 32px;
+  --space-40: 40px;
+  --space-56: 56px;
+
+  --radius-frame: 12px;
+  --radius-inner: 8px;
+  --radius-pill: 999px;
+  /* Movimento: DESIGN.md §4. Curvas por papel, durações por nível de frequência. */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);      /* entradas, elevações, zoom: tudo que chega */
+  --ease-hover: ease;                              /* troca de cor e opacidade em hover */
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1); /* só nos objetos brincalhões: teclas e lombada */
+
+  --dur-press: 120ms;   /* feedback de clique (scale) */
+  --dur-hover: 200ms;   /* cor, opacidade, lift de chip, escurecer da folha */
+  --dur-lift: 260ms;    /* quadro sobe no hover */
+  --dur-zoom: 300ms;    /* imagem interna do quadro: mais lenta que o lift, no teto de UI */
+  --dur-playful: 450ms; /* mola das teclas e da lombada (overshoot precisa de tempo) */
+  --dur-enter: 560ms;   /* entrada da página (uma vez por visita) */
+  --dur-enter-soft: 420ms; /* entrada de apoio e decoração */
+  --dur-theme: 450ms;   /* revelação do tema (View Transition) */
+  --dur-theme-reduced: 150ms; /* reduced motion: fade simples */
+  --dur-icon: 200ms;    /* giro do ícone de tema durante a revelação */
+  --dur-lang-out: 120ms; /* letreiro: texto antigo sai (todos juntos) */
+  --dur-lang-in: 200ms;  /* letreiro: texto novo entra */
+  --dur-lang-out-reduced: 80ms;
+  --dur-lang-in-reduced: 120ms;
+  --lang-wave-max: 140ms; /* teto da onda do letreiro */
+  --lang-shift: 0.45em;   /* distância vertical do letreiro */
+  --role-interval: 3200ms; /* tempo entre Software Engineer e AI Engineer */
+  --delay-undim: 60ms;  /* folha espera antes de desescurecer: atravessar o vão não pisca */
+
+  --rise-lead: 12px;    /* distância de entrada do protagonista */
+  --rise-support: 6px;  /* apoio sobe menos; decoração não sobe */
+  --lift-frame: -3px;
+  --lift-chip: -2px;
+  --zoom-frame: 1.045;
+  --press-scale: 0.97;
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .5 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  --grass-image: url("/footer/grass.webp");
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --color-bg: var(--gray-165);
+    --color-bg-surface: var(--gray-198);
+    --color-bg-raised: var(--gray-235);
+    --color-bg-fill: var(--gray-265);
+    --color-border: var(--gray-290);
+    --color-border-strong: var(--gray-400);
+    --color-text: var(--gray-935);
+    --color-text-secondary: var(--gray-700);
+    --color-icon-subtle: var(--gray-560);
+    --color-inverse-bg: var(--gray-935);
+    --color-inverse-text: var(--gray-165);
+    --color-live: var(--green-740);
+    --color-placeholder: var(--sage-400);
+    --color-placeholder-text: var(--sage-820);
+    --grass-image: url("/footer/grass-night.webp");
+    --shadow-lift: 0 1px 2px oklch(0 0 0 / 0.4), 0 14px 30px -14px oklch(0 0 0 / 0.7);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --color-bg: var(--gray-165);
+  --color-bg-surface: var(--gray-198);
+  --color-bg-raised: var(--gray-235);
+  --color-bg-fill: var(--gray-265);
+  --color-border: var(--gray-290);
+  --color-border-strong: var(--gray-400);
+  --color-text: var(--gray-935);
+  --color-text-secondary: var(--gray-700);
+  --color-icon-subtle: var(--gray-560);
+  --color-inverse-bg: var(--gray-935);
+  --color-inverse-text: var(--gray-165);
+  --color-live: var(--green-740);
+  --color-placeholder: var(--sage-400);
+  --color-placeholder-text: var(--sage-820);
+  --grass-image: url("/footer/grass-night.webp");
+  --shadow-lift: 0 1px 2px oklch(0 0 0 / 0.4), 0 14px 30px -14px oklch(0 0 0 / 0.7);
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+}
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font: var(--text-body);
+}
+p, figure, ul, ol { margin: 0; }
+button { font: inherit; color: inherit; }
+a { color: inherit; text-decoration: none; }
+:focus-visible { outline: 2px solid var(--color-text); outline-offset: 3px; border-radius: 6px; }
+
+/* Utilitários globais (os únicos fora dos CSS Modules) */
+/* texto só para leitor de tela */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+/* texto traduzido (<T>, lib/i18n): inline-block para o letreiro poder mover com transform */
+[data-i18n] { display: inline-block; }
+
+/* Reduced motion: menos e mais suave, não zero. Cada componente troca movimento por opacidade
+   (ver os .module.css de cada área). Aqui só zeramos as distâncias, então nada se desloca. */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --rise-lead: 0px;
+    --rise-support: 0px;
+    --lift-frame: 0px;
+    --lift-chip: 0px;
+    --zoom-frame: 1;
+    --press-scale: 1;
+  }
+}
+
+/* Troca de tema: revelação de cima para baixo (DESIGN.md §4). O snapshot antigo fica parado,
+   o novo é revelado por uma máscara com borda suave. Reduced motion: crossfade curto. */
+::view-transition-old(root),
+::view-transition-new(root) { animation-timing-function: var(--ease-out); }
+html.vt-fade::view-transition-old(root),
+html.vt-fade::view-transition-new(root) { animation-duration: var(--dur-theme-reduced); }
+html.vt-reveal::view-transition-old(root) { animation: none; }
+html.vt-reveal::view-transition-new(root) {
+  mix-blend-mode: normal;
+  -webkit-mask-image: linear-gradient(to bottom, #000 40%, transparent 60%);
+          mask-image: linear-gradient(to bottom, #000 40%, transparent 60%);
+  -webkit-mask-size: 100% 250%;
+          mask-size: 100% 250%;
+  -webkit-mask-repeat: no-repeat;
+          mask-repeat: no-repeat;
+  animation: vt-reveal var(--dur-theme) var(--ease-out) both;
+}
+@keyframes vt-reveal {
+  from { -webkit-mask-position: 0 100%; mask-position: 0 100%; }
+  to { -webkit-mask-position: 0 0; mask-position: 0 0; }
+}
+/* o ícone de tema ganha nome só durante a revelação, para girar à parte (fora do CSS Modules: o nome não pode ser renomeado) */
+html.vt-reveal [data-theme-icon] { view-transition-name: theme-icon; }
+::view-transition-group(theme-icon) { animation-duration: var(--dur-icon); }
+::view-transition-old(theme-icon) { animation: icon-out var(--dur-icon) var(--ease-out) both; }
+::view-transition-new(theme-icon) { animation: icon-in var(--dur-icon) var(--ease-out) both; }
+@keyframes icon-out { to { transform: rotate(180deg); opacity: 0; } }
+@keyframes icon-in { from { transform: rotate(-180deg); opacity: 0; } }

@@ -1,0 +1,85 @@
+/* Composição da home (DESIGN.md §5): grade da página, margem, barra lateral, folha e mato. */
+
+.page {
+  max-width: 1240px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  grid-template-rows: auto 1fr;
+  gap: 0 var(--space-40);
+  padding: 36px 36px 0;
+}
+
+/* margem da folha: cidade, hora local, idioma e tema numa faixa fina acima dos quadros */
+.margin {
+  grid-column: 2;
+  grid-row: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-16);
+  min-height: 36px;
+  margin-bottom: var(--space-16);
+  border-bottom: 1px solid var(--color-border);
+  font: var(--text-caption);
+  color: var(--color-text-secondary);
+}
+
+/* a barra ocupa a altura da linha da folha: o contato desce para a base, alinhado com o fim da linha do tempo
+   (o mesmo respiro de 28px que a folha tem embaixo) */
+.side {
+  grid-column: 1;
+  grid-row: 2;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-24);
+  padding-bottom: var(--space-28);
+}
+.main { grid-column: 2; grid-row: 2; min-width: 0; padding-bottom: var(--space-28); }
+
+/* mato: rodapé de ponta a ponta, foto com grão real (public/footer/grass.webp, 824×400, já recortada) */
+.grass {
+  --grass-height: 170px;
+  height: var(--grass-height);
+  margin-top: var(--space-56);
+  /* dia no claro, noite no escuro (token em globals.css); nítido, sem blur (decisão de 2026-11-17) */
+  background: var(--grass-image) repeat-x left bottom / auto var(--grass-height);
+  pointer-events: none;
+}
+
+/* Uma tela só (DESIGN.md §5): com 721px+ de largura e 840px+ de altura, a home inteira cabe sem rolagem.
+   A largura da folha sai da altura da janela, mantendo os quadros 4:3 e a experiência 3:1:
+     folha = (5/6)·L + 16  (duas linhas de quadros + a linha de experiência + 2 vãos de 16)
+     100dvh = topo 36 + margem 52 + folha + respiro 28 + mato 96  →  L = (100dvh − 228px) · 6/5
+   O mato ocupa o que sobra, ancorado no topo: aparecem as flores e as pontas, os caules saem da tela.
+   840px é a menor altura em que o verso das tiras ainda cabe o resumo inteiro (172×221); abaixo, a página rola. */
+@media (min-width: 721px) and (min-height: 840px) {
+  .shell { display: grid; grid-template-rows: auto minmax(0, 1fr); height: 100dvh; }
+  .page {
+    --sheet-fit: calc((100dvh - 228px) * 6 / 5);
+    width: 100%;
+    max-width: min(1240px, calc(var(--sheet-fit) + 352px));
+  }
+  .margin, .main { width: min(100%, var(--sheet-fit)); }
+  .grass { height: auto; min-height: 0; margin-top: 0; background-position: left top; }
+}
+
+/* entrada (DESIGN.md §4): a margem acompanha o perfil; o mato chega por último */
+@keyframes rise { from { opacity: 0; transform: translateY(var(--rise)); } }
+@keyframes fade-in { from { opacity: 0; } }
+.margin { --rise: var(--rise-support); animation: rise var(--dur-enter-soft) var(--ease-out) 90ms backwards; }
+.grass { animation: fade-in var(--dur-enter-soft) var(--ease-out) 240ms backwards; }
+
+@media (prefers-reduced-motion: reduce) {
+  .margin, .grass { animation-delay: 0ms !important; }
+}
+
+@media (max-width: 720px) {
+  .page { grid-template-columns: 1fr; grid-template-rows: none; padding: var(--space-12) var(--space-16) 0; }
+  .margin, .side, .main { grid-column: 1; grid-row: auto; }
+  .margin { margin-bottom: var(--space-24); }
+  .side { margin-bottom: var(--space-32); padding-bottom: 0; }
+  .main { padding-bottom: 0; }
+  .grass { --grass-height: 120px; margin-top: var(--space-40); }
+}

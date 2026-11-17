@@ -1,0 +1,5 @@
+# Scripts de instalação liberados explicitamente (pnpm 11 bloqueia por padrão):
+# esbuild e workerd vêm do wrangler e só baixam os binários usados para rodar a Pages Function localmente.
+allowBuilds:
+  esbuild: true
+  workerd: true

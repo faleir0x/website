@@ -1,0 +1,54 @@
+/* Perfil: barra lateral (a posição e o espaçamento entre as peças vêm de features/home) */
+.avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+.avatar > img { width: 100%; height: 100%; object-fit: cover; }
+.name { font: var(--text-display); letter-spacing: var(--track-display); margin: 0; }
+.roles { margin: var(--space-6) 0 0; color: var(--color-text-secondary); }
+.role { display: inline-block; }
+/* texto sobre você: dois parágrafos curtos em body (16px), em text-secondary para não competir com o nome */
+.bio { display: grid; gap: var(--space-12); font: var(--text-body); color: var(--color-text-secondary); }
+.bio p { margin: 0; text-wrap: pretty; }
+/* os botões cabem numa linha (214px na barra de 240); só o e-mail de fallback quebra para baixo.
+   margin-top: auto empurra o contato para a base da barra, alinhado com o fim da folha */
+.actions { display: flex; flex-wrap: wrap; gap: var(--space-6); margin-top: auto; }
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-6);
+  padding: var(--space-6) var(--space-12);
+  border-radius: var(--radius-pill);
+  border: 0;
+  cursor: pointer;
+  font: var(--text-body-sm);
+  background: var(--color-bg-fill);
+  color: var(--color-text);
+  white-space: nowrap;
+  transition: transform var(--dur-hover) var(--ease-out);
+}
+.chip:active { transform: scale(var(--press-scale)); transition-duration: var(--dur-press); }
+.chipSolid { background: var(--color-inverse-bg); color: var(--color-inverse-text); }
+.swapLabel { display: inline-grid; }
+.swapLabel > * { grid-area: 1 / 1; text-align: center; }
+.swapLabel > [data-off] { visibility: hidden; }
+.emailFallback { flex-basis: 100%; font: var(--text-caption); color: var(--color-text); user-select: all; }
+
+@media (hover: hover) and (pointer: fine) {
+  .chip:hover { transform: translateY(var(--lift-chip)); }
+  .chip:hover:active { transform: scale(var(--press-scale)); }
+}
+
+/* entrada: o nome lidera, o resto acompanha (DESIGN.md §4) */
+@keyframes rise { from { opacity: 0; transform: translateY(var(--rise)); } }
+@keyframes fade-in { from { opacity: 0; } }
+.name { --rise: var(--rise-lead); animation: rise var(--dur-enter) var(--ease-out) 0ms backwards; }
+.avatar { animation: fade-in var(--dur-enter-soft) var(--ease-out) 0ms backwards; }
+.roles, .bio, .actions { --rise: var(--rise-support); animation: rise var(--dur-enter-soft) var(--ease-out) 90ms backwards; }
+
+@media (prefers-reduced-motion: reduce) {
+  .name, .avatar, .roles, .bio, .actions { animation-delay: 0ms !important; }
+}

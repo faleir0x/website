@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://faleir0x.com/sitemap-index.xml
