@@ -1,11 +1,13 @@
 "use client";
 
+import { Icon } from "@/components/icon";
 import { projects } from "@/content/projects";
 import { ui } from "@/content/ui";
 import { useI18n, type Localized } from "@/lib/i18n/i18n";
 import { Frame, Placeholder } from "@/features/sheet/frame";
 import { fillRows } from "./fill-rows";
 import { ProjectReel, type Reel } from "./project-reel";
+import s from "./project-frames.module.css";
 
 /** Um projeto da folha. Veja content/projects.ts para adicionar. */
 export type Project = {
@@ -42,6 +44,12 @@ export function ProjectFrames() {
           <img src={p.image} alt="" loading="lazy" />
         ) : (
           <Placeholder label={t(ui.imgProject)} />
+        )}
+        {/* o quadro inteiro é o link; a seta só avisa que leva para fora (o nome acessível já diz “nova aba”) */}
+        {p.href && (
+          <span className={s.link} aria-hidden="true">
+            <Icon name="arrow" />
+          </span>
         )}
       </Frame>
     );

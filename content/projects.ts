@@ -20,6 +20,4 @@ export const projects: Project[] = [
       dark: { src: "/projects/ecopulse/reel-dark.mp4", poster: "/projects/ecopulse/reel-dark-poster.webp" },
     },
   },
-  { title: "Projeto Dois", kind: { pt: "web app", en: "web app" }, status: "live" },
-  { title: "Projeto Três", kind: { pt: "ferramenta", en: "tool" }, status: "live" },
 ];

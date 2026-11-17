@@ -1,0 +1,16 @@
+/* seta de link no canto do quadro de projeto: o mesmo fundo do cartão do Ouvindo, por cima do filme */
+.link {
+  position: absolute;
+  top: var(--space-8);
+  right: var(--space-8);
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-pill);
+  background: color-mix(in oklch, var(--color-bg-raised) 92%, transparent);
+  /* a sombra separa a seta do filme quando o fundo dele é da mesma cor (tela clara do app) */
+  box-shadow: var(--shadow-lift);
+  color: var(--color-text);
+}
