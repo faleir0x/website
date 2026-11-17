@@ -3,11 +3,12 @@ import type { Job } from "@/features/experience/experience-frame";
 /*
  * Experiência, em ordem cronológica (do LinkedIn, 2026-11-16). Stacks do Sesi ainda a confirmar.
  * Cada emprego vira uma tira; sem `end` é o atual. Stacks são slugs de components/tech-icon.tsx.
+ * No cargo, \n marca onde a linha quebra na tira (ex.: "Estagiário de\nSuporte de TI").
  */
 export const experience: Job[] = [
   {
     company: "Sesi São Paulo",
-    role: { pt: "Estagiário de Suporte de TI", en: "IT Support Intern" },
+    role: { pt: "Estagiário de\nSuporte de TI", en: "IT Support\nIntern" },
     start: "2023-09",
     end: "2024-06",
     summary: {
@@ -18,7 +19,7 @@ export const experience: Job[] = [
   },
   {
     company: "FMRP · USP",
-    role: { pt: "Estagiário de Infraestrutura de TI", en: "IT Infrastructure Intern" },
+    role: { pt: "Estagiário de\nInfraestrutura de TI", en: "IT Infrastructure\nIntern" },
     start: "2024-07",
     end: "2025-07",
     summary: {
@@ -29,7 +30,7 @@ export const experience: Job[] = [
   },
   {
     company: "Agência Compor",
-    role: { pt: "Estagiário de Desenvolvimento", en: "Software Development Intern" },
+    role: { pt: "Estagiário de\nDesenvolvimento", en: "Development\nIntern" },
     start: "2025-08",
     end: "2026-07",
     summary: {
@@ -40,7 +41,7 @@ export const experience: Job[] = [
   },
   {
     company: "Agência Compor",
-    role: { pt: "Desenvolvedor Full Stack", en: "Full Stack Developer" },
+    role: { pt: "Desenvolvedor\nFull Stack", en: "Full Stack\nDeveloper" },
     start: "2026-08",
     summary: {
       pt: "Aplicações full stack para operações internas, integrações com Olist e n8n via webhooks, deploys e ambientes de produção, autenticação e monitoramento.",

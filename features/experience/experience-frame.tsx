@@ -34,6 +34,7 @@ export function ExperienceFrame() {
       <ol className={s.tiles}>
         {experience.map((j, i) => {
           const when = period(j.start, j.end, lang, t(ui.today));
+          const role = t(j.role); // com \n onde a linha quebra na tira
           const stacks = j.stacks.map(techName).join(", ");
           return (
             <li key={j.company + j.start}>
@@ -42,7 +43,7 @@ export function ExperienceFrame() {
                 className={s.tile}
                 data-open={open === i || undefined}
                 aria-expanded={open === i}
-                aria-label={`${t(j.role)}, ${j.company}, ${when}. ${t(j.summary)}${stacks ? ` ${stacks}.` : ""}`}
+                aria-label={`${role.replace(/\n/g, " ")}, ${j.company}, ${when}. ${t(j.summary)}${stacks ? ` ${stacks}.` : ""}`}
                 onClick={() => setOpen(open === i ? null : i)}
               >
                 <span className={s.tileFace} aria-hidden="true">
@@ -51,7 +52,7 @@ export function ExperienceFrame() {
                     <T>{when}</T>
                   </time>
                   <span>
-                    <span className={s.tileRole}><T>{t(j.role)}</T></span>
+                    <span className={s.tileRole}><T>{role}</T></span>
                     <span className={s.tileCo}>{j.company}</span>
                   </span>
                 </span>
