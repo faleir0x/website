@@ -17,7 +17,7 @@ export function ToolsFrame() {
   const rows = Math.max(3, Math.ceil(tools.length / 4));
   return (
     <Frame label={t(ui.tools)} title={<T>{t(ui.tools)}</T>}>
-      <ul className={s.tools} style={{ gridTemplateRows: `repeat(${rows}, minmax(0, 1fr))` }}>
+      <ul className={s.tools} data-overflow="visible" style={{ gridTemplateRows: `repeat(${rows}, minmax(0, 1fr))` }}>
         {tools.map((tool) => (
           // focável: o rótulo com o nome aparece no hover e no foco (R1)
           <li key={tool.slug} className={s.tool} tabIndex={0}>

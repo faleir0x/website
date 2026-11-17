@@ -10,6 +10,9 @@ import s from "./frame.module.css";
  *   href    → o quadro é um link (externo abre em nova aba)
  *   action  → o quadro inteiro é um botão (ex.: Lendo abre a estante)
  *   nenhum  → o quadro é só um grupo com rótulo
+ *
+ * O quadro recorta o conteúdo nas bordas arredondadas. Um filho direto com data-overflow="visible"
+ * desliga o recorte (ex.: Ferramentas, cujo nome no hover sai do quadro).
  */
 
 export function Sheet({ children }: { children: ReactNode }) {

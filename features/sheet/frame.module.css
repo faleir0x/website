@@ -32,6 +32,8 @@ a.frame { cursor: pointer; }
   pointer-events: none;
 }
 .clip { position: absolute; inset: 0; overflow: hidden; border-radius: inherit; }
+/* conteúdo que precisa passar da borda (ex.: o nome das ferramentas no hover) marca a raiz com data-overflow="visible" */
+.clip:has(> [data-overflow="visible"]) { overflow: visible; }
 .clip > .ph, .clip > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform var(--dur-zoom) var(--ease-out); }
 /* a linha inteira da folha (experiência), 3:1 */
 .row { grid-column: 1 / -1; }
