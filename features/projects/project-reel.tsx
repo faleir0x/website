@@ -5,19 +5,23 @@ import { prefersReducedMotion, tokenMs } from "@/lib/motion/switch";
 import { useIsDark } from "@/lib/theme/theme";
 import s from "./project-reel.module.css";
 
-/** Um filme curto do projeto, um arquivo por tema. O pôster é o último frame. */
+/**
+ * Um filme curto do projeto, um par por tema: `src` é o vídeo e `poster` é a capa de repouso, uma
+ * imagem própria feita para ser lida no tamanho do quadro (não é o último frame do vídeo).
+ */
 export type Reel = Record<"light" | "dark", { src: string; poster: string }>;
 
 /*
- * Reel do projeto (DESIGN.md §6 · Projetos; escolhido em design-explorations/ecopulse-reel.html, variante B).
- *   repouso       → o último frame (o pôster)
- *   hover / foco  → toca do começo, uma vez, e o quadro cresce 1,6× por cima dos vizinhos enquanto o
- *                   cursor está nele (só com mouse de verdade; foco só pelo teclado)
- *   sai no meio   → o pôster volta num fade e o vídeo para no fim; se já acabou, nada muda
+ * Reel do projeto (DESIGN.md §6 · Projetos).
+ *   repouso       → a capa, por cima do vídeo (que fica parado no começo)
+ *   hover / foco  → a capa some (fade) e o vídeo toca do começo, uma vez; o quadro cresce 1,6× por cima
+ *                   dos vizinhos enquanto o cursor está nele (só com mouse de verdade; foco só pelo teclado)
+ *   fim do vídeo  → a capa volta em fade e o vídeo volta ao começo, por baixo
+ *   sai no meio   → igual ao fim: a capa volta em fade
  *   toque         → toca uma vez quando o quadro entra na tela (60%), depois da onda de entrada, e o
  *                   quadro cresce só enquanto toca
- *   reduced motion→ só o pôster
- *   troca de tema → troca o arquivo e repousa no fim (nunca no frame 0)
+ *   reduced motion→ só a capa, nunca toca
+ *   troca de tema → troca os arquivos e volta ao repouso
  * O vídeo é decorativo (aria-hidden): o nome do quadro vem do Frame, que é o link do projeto.
  */
 export function ProjectReel({ reel }: { reel: Reel }) {
@@ -45,43 +49,47 @@ export function ProjectReel({ reel }: { reel: Reel }) {
       const y = (r.top + r.height / 2 - sheet.top) / sheet.height;
       frame.style.setProperty("--grow-origin", `${x < 0.34 ? "left" : x > 0.66 ? "right" : "center"} ${y > 0.5 ? "bottom" : "top"}`);
     };
-    // data-playing: o filme foi mandado tocar e ainda não acabou (também liga o crescimento no toque)
+    // data-playing: o filme foi mandado tocar e ainda não voltou à capa (também liga o crescimento no toque)
     const playing = (on: boolean) => root.current?.toggleAttribute("data-playing", on);
     const isPlaying = () => !!root.current?.hasAttribute("data-playing");
-    playing(false); // arquivo novo (ex.: troca de tema no meio do filme) sempre começa em repouso
+    // a capa fica visível por padrão; data-hidden a esconde em fade (só opacity)
+    const showCover = (on: boolean) => cover.current?.toggleAttribute("data-hidden", !on);
 
+    /** Repouso imediato: capa por cima, vídeo parado no começo. */
     const rest = () => {
       clearTimeout(fade);
       playing(false);
+      showCover(true);
       v.pause();
-      if (Number.isFinite(v.duration)) v.currentTime = Math.max(0, v.duration - 0.05);
-      cover.current?.removeAttribute("data-on");
+      v.currentTime = 0;
     };
+    rest(); // arquivo novo (primeira carga ou troca de tema no meio do filme) sempre começa em repouso
+
     const play = () => {
       if (prefersReducedMotion()) return;
       clearTimeout(fade);
       placeGrowth();
-      cover.current?.removeAttribute("data-on");
       playing(true);
       v.currentTime = 0;
       v.play().catch(() => {});
     };
-    const stop = () => {
-      if (!isPlaying()) return; // já acabou (ou nem começou): fica como está
-      if (v.paused) return rest(); // mandou tocar, mas o arquivo ainda carregava: volta direto ao repouso
+    // a capa só some quando o vídeo de fato começa: sem isso, um arquivo ainda carregando mostraria o vazio
+    const onPlaying = () => isPlaying() && showCover(false);
+
+    /** Volta à capa em fade; depois do fade, o vídeo para e volta ao começo, por baixo dela. */
+    const back = () => {
+      if (!isPlaying()) return; // já está na capa
       playing(false);
-      // o pôster cobre o vídeo em fade e, por baixo, o vídeo já vai para o fim (que é igual ao pôster)
-      cover.current?.setAttribute("data-on", "");
-      fade = setTimeout(rest, tokenMs("--dur-hover"));
+      showCover(true);
+      clearTimeout(fade);
+      fade = setTimeout(() => {
+        v.pause();
+        v.currentTime = 0;
+      }, tokenMs("--dur-hover"));
     };
 
-    // arquivo novo (primeira carga ou troca de tema): repousa no fim, a não ser que o filme já tenha sido
-    // mandado tocar antes de os metadados chegarem (no toque, o quadro costuma já estar na tela ao abrir)
-    const onMeta = () => !isPlaying() && rest();
-    v.addEventListener("loadedmetadata", onMeta);
-    if (v.readyState >= 1) rest();
-    const onEnded = () => playing(false);
-    v.addEventListener("ended", onEnded);
+    v.addEventListener("playing", onPlaying);
+    v.addEventListener("ended", back);
 
     const fine = window.matchMedia("(hover: hover) and (pointer: fine)");
     const onEnter = () => {
@@ -90,9 +98,9 @@ export function ProjectReel({ reel }: { reel: Reel }) {
     };
     const onFocus = () => frame.matches(":focus-visible") && play();
     frame.addEventListener("pointerenter", onEnter);
-    frame.addEventListener("pointerleave", stop);
+    frame.addEventListener("pointerleave", back);
     frame.addEventListener("focus", onFocus);
-    frame.addEventListener("blur", stop);
+    frame.addEventListener("blur", back);
 
     // toque: sem hover, toca uma vez ao entrar na tela, depois da onda de entrada
     let seen: IntersectionObserver | undefined;
@@ -112,12 +120,12 @@ export function ProjectReel({ reel }: { reel: Reel }) {
       clearTimeout(fade);
       clearTimeout(touchDelay);
       seen?.disconnect();
-      v.removeEventListener("loadedmetadata", onMeta);
-      v.removeEventListener("ended", onEnded);
+      v.removeEventListener("playing", onPlaying);
+      v.removeEventListener("ended", back);
       frame.removeEventListener("pointerenter", onEnter);
-      frame.removeEventListener("pointerleave", stop);
+      frame.removeEventListener("pointerleave", back);
       frame.removeEventListener("focus", onFocus);
-      frame.removeEventListener("blur", stop);
+      frame.removeEventListener("blur", back);
     };
   }, [media?.src]);
 

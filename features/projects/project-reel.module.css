@@ -1,6 +1,6 @@
 /* Reel do projeto: o filme preenche o quadro. Sem o zoom interno do quadro (o filme já tem câmera). */
 .reel { position: absolute; inset: 0; }
 .video, .cover { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-/* pôster por cima, invisível; aparece em fade quando o hover sai no meio do filme */
-.cover { opacity: 0; pointer-events: none; }
-.cover[data-on] { opacity: 1; transition: opacity var(--dur-hover) var(--ease-out); }
+/* capa de repouso por cima do vídeo; some em fade enquanto o filme toca e volta em fade no fim */
+.cover { pointer-events: none; transition: opacity var(--dur-hover) var(--ease-out); }
+.cover[data-hidden] { opacity: 0; }
