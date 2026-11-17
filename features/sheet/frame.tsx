@@ -3,7 +3,7 @@ import s from "./frame.module.css";
 
 /*
  * A folha e seus quadros (DESIGN.md §5–7). Todo conteúdo da home mora num Frame dentro da Sheet;
- * o Frame cuida do que é igual em todos: proporção 4:3 (ou 3:1 na linha inteira), hover/foco que
+ * o Frame cuida do que é igual em todos: proporção 4:3 (ou 4:1 na linha inteira), hover/foco que
  * levanta o quadro e escurece os vizinhos, entrada em onda, e o que acontece no clique.
  *
  * O clique tem três formas, e só uma por quadro:
@@ -28,7 +28,7 @@ type FrameProps = {
   /** Sufixo do rótulo em links externos, ex.: “(abre em nova aba)” */
   newTab?: string;
   action?: { label: string; onClick: () => void; popup?: "dialog" };
-  /** cell: um quadro 4:3. row: a linha inteira da folha, 3:1 (Experiência) */
+  /** cell: um quadro 4:3. row: a linha inteira da folha, 4:1 (Experiência) */
   size?: "cell" | "row";
   children: ReactNode;
 };

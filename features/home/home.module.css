@@ -1,13 +1,13 @@
 /* Composição da home (DESIGN.md §5): grade da página, margem, barra lateral, folha e mato. */
 
 .page {
-  max-width: 1240px;
+  max-width: 1440px;
   margin: 0 auto;
   display: grid;
   grid-template-columns: 240px 1fr;
   grid-template-rows: auto 1fr;
   gap: 0 var(--space-40);
-  padding: 36px 36px 0;
+  padding: 20px 36px 0;
 }
 
 /* margem da folha: cidade, hora local, idioma e tema numa faixa fina acima dos quadros */
@@ -18,15 +18,15 @@
   justify-content: space-between;
   align-items: center;
   gap: var(--space-16);
-  min-height: 36px;
-  margin-bottom: var(--space-16);
+  min-height: 32px;
+  margin-bottom: var(--space-12);
   border-bottom: 1px solid var(--color-border);
   font: var(--text-caption);
   color: var(--color-text-secondary);
 }
 
 /* a barra ocupa a altura da linha da folha: o contato desce para a base, alinhado com o fim da linha do tempo
-   (o mesmo respiro de 28px que a folha tem embaixo) */
+   (o mesmo respiro de 16px que a folha tem embaixo) */
 .side {
   grid-column: 1;
   grid-row: 2;
@@ -34,9 +34,9 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-24);
-  padding-bottom: var(--space-28);
+  padding-bottom: var(--space-16);
 }
-.main { grid-column: 2; grid-row: 2; min-width: 0; padding-bottom: var(--space-28); }
+.main { grid-column: 2; grid-row: 2; min-width: 0; padding-bottom: var(--space-16); }
 
 /* mato: rodapé de ponta a ponta, foto com grão real (public/footer/grass.webp, 824×400, já recortada) */
 .grass {
@@ -48,18 +48,19 @@
   pointer-events: none;
 }
 
-/* Uma tela só (DESIGN.md §5): com 721px+ de largura e 840px+ de altura, a home inteira cabe sem rolagem.
-   A largura da folha sai da altura da janela, mantendo os quadros 4:3 e a experiência 3:1:
-     folha = (5/6)·L + 16  (duas linhas de quadros + a linha de experiência + 2 vãos de 16)
-     100dvh = topo 36 + margem 52 + folha + respiro 28 + mato 96  →  L = (100dvh − 228px) · 6/5
-   O mato ocupa o que sobra, ancorado no topo: aparecem as flores e as pontas, os caules saem da tela.
-   840px é a menor altura em que o verso das tiras ainda cabe o resumo inteiro (172×221); abaixo, a página rola. */
+/* Uma tela só (DESIGN.md §5, “folha justa” de 2026-11-17): com 721px+ de largura e 840px+ de altura,
+   a home inteira cabe sem rolagem. A largura da folha sai da altura da janela, mantendo os quadros 4:3
+   e a experiência 4:1:
+     folha = (3/4)·L + 16  (duas linhas de quadros + a linha de experiência + 2 vãos de 16)
+     100dvh = topo 20 + margem 44 + folha + respiro 16 + mato 72  →  L = (100dvh − 168px) · 4/3
+   O mato ocupa o que sobra (no mínimo 72px), ancorado no topo: aparecem as flores, os caules saem da tela.
+   A página cresce até 1440px. Abaixo de 840px de altura, a página rola. */
 @media (min-width: 721px) and (min-height: 840px) {
   .shell { display: grid; grid-template-rows: auto minmax(0, 1fr); height: 100dvh; }
   .page {
-    --sheet-fit: calc((100dvh - 228px) * 6 / 5);
+    --sheet-fit: calc((100dvh - 168px) * 4 / 3);
     width: 100%;
-    max-width: min(1240px, calc(var(--sheet-fit) + 352px));
+    max-width: min(1440px, calc(var(--sheet-fit) + 352px));
   }
   .margin, .main { width: min(100%, var(--sheet-fit)); }
   .grass { height: auto; min-height: 0; margin-top: 0; background-position: left top; }

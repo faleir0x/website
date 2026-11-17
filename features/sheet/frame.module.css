@@ -34,10 +34,14 @@ a.frame { cursor: pointer; }
 .clip { position: absolute; inset: 0; overflow: hidden; border-radius: inherit; }
 /* conteúdo que precisa passar da borda (ex.: o nome das ferramentas no hover) marca a raiz com data-overflow="visible" */
 .clip:has(> [data-overflow="visible"]) { overflow: visible; }
+/* quadro que cresce enquanto mostra um filme: o conteúdo marca a raiz com data-grow (ex.: o reel de projeto),
+   e --grow-origin diz para que lado crescer (fica dentro da folha). Toque: cresce enquanto toca (data-playing). */
+.frame:has([data-grow]) .img { transform-origin: var(--grow-origin, left top); }
+.frame:has([data-grow][data-playing]) .img { transform: scale(var(--grow-reel)); z-index: 3; }
 .clip > .ph, .clip > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform var(--dur-zoom) var(--ease-out); }
-/* a linha inteira da folha (experiência), 3:1 */
+/* a linha inteira da folha (experiência), 4:1 */
 .row { grid-column: 1 / -1; }
-.row .img { aspect-ratio: 3 / 1; }
+.row .img { aspect-ratio: 4 / 1; }
 
 /* quadro que é um botão: a camada cobre o quadro inteiro */
 .frameButton { position: absolute; inset: 0; z-index: 2; border: 0; padding: 0; background: transparent; cursor: pointer; border-radius: inherit; }
@@ -66,6 +70,7 @@ a.frame { cursor: pointer; }
   .frame:not(.row):hover .img::before { opacity: 1; }
   .frame:hover .clip > .ph, .frame:hover .clip > img { transform: scale(var(--zoom-frame)); }
   .frameButton:hover { background: transparent; }
+  .frame:has([data-grow]):hover .img { transform: translateY(var(--lift-frame)) scale(var(--grow-reel)); z-index: 3; }
 }
 
 /* foco = hover: todo efeito de hover tem o gêmeo em :focus-visible (DESIGN.md §8 R1) */
@@ -73,6 +78,7 @@ a.frame { cursor: pointer; }
 .frame:focus-visible .img, .frame:has(.frameButton:focus-visible) .img { transform: translateY(var(--lift-frame)); }
 .frame:focus-visible .img::before { opacity: 1; }
 .frame:focus-visible .clip > .ph, .frame:focus-visible .clip > img { transform: scale(var(--zoom-frame)); }
+.frame:has([data-grow]):focus-visible .img { transform: translateY(var(--lift-frame)) scale(var(--grow-reel)); z-index: 3; }
 
 /* entrada: uma onda por visita, da esquerda para a direita e de cima para baixo (DESIGN.md §4) */
 @keyframes rise { from { opacity: 0; transform: translateY(var(--rise)); } }
