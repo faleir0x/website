@@ -5,6 +5,7 @@ import { ui } from "@/content/ui";
 import { useI18n, type Localized } from "@/lib/i18n/i18n";
 import { Frame, Placeholder } from "@/features/sheet/frame";
 import { fillRows } from "./fill-rows";
+import { ProjectReel, type Reel } from "./project-reel";
 
 /** Um projeto da folha. Veja content/projects.ts para adicionar. */
 export type Project = {
@@ -15,6 +16,8 @@ export type Project = {
   status: "live" | "soon";
   /** Thumbnail em /public (ex.: "/projects/meu-projeto.webp"). Sem imagem, o quadro mostra o placeholder */
   image?: string;
+  /** Filme curto que toca no hover, um por tema (ganha da imagem). Veja project-reel.tsx */
+  reel?: Reel;
   /** Destino do clique. Sem href o quadro não é link (DESIGN.md §6) */
   href?: string;
 };
@@ -33,7 +36,13 @@ export function ProjectFrames() {
     }
     return (
       <Frame key={`p${i}`} href={p.href} newTab={t(ui.newTab)} label={`${p.title}, ${t(p.kind)}`} title={p.title}>
-        {p.image ? <img src={p.image} alt="" loading="lazy" /> : <Placeholder label={t(ui.imgProject)} />}
+        {p.reel ? (
+          <ProjectReel reel={p.reel} />
+        ) : p.image ? (
+          <img src={p.image} alt="" loading="lazy" />
+        ) : (
+          <Placeholder label={t(ui.imgProject)} />
+        )}
       </Frame>
     );
   });

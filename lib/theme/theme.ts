@@ -31,3 +31,25 @@ export function useTheme(): [dark: boolean, toggle: () => void] {
   }, []);
   return [dark, toggle];
 }
+
+/**
+ * Só leitura: o tema que está valendo agora, para quem precisa trocar mídia junto (ex.: o reel de um
+ * projeto). Acompanha a troca pelo botão (data-theme) e a do sistema. null até montar: no HTML
+ * estático o tema ainda não é conhecido.
+ */
+export function useIsDark(): boolean | null {
+  const [dark, setDark] = useState<boolean | null>(null);
+  useEffect(() => {
+    const sync = () => setDark(isDarkNow());
+    sync();
+    const attr = new MutationObserver(sync);
+    attr.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+    const system = window.matchMedia("(prefers-color-scheme: dark)");
+    system.addEventListener("change", sync);
+    return () => {
+      attr.disconnect();
+      system.removeEventListener("change", sync);
+    };
+  }, []);
+  return dark;
+}

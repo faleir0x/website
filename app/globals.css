@@ -86,6 +86,7 @@
   --lang-wave-max: 140ms; /* teto da onda do letreiro */
   --lang-shift: 0.45em;   /* distância vertical do letreiro */
   --role-interval: 3200ms; /* tempo entre Software Engineer e AI Engineer */
+  --delay-reel: 800ms;  /* toque: o reel do projeto espera a onda de entrada antes de tocar */
   --delay-undim: 60ms;  /* folha espera antes de desescurecer: atravessar o vão não pisca */
 
   --rise-lead: 12px;    /* distância de entrada do protagonista */
