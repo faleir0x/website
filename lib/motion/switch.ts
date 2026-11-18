@@ -4,7 +4,7 @@
  * Animações de troca (DESIGN.md §4 · Trocas de tema e idioma).
  * Tema: View Transition “revelação” (a página nova desce de cima). Idioma: “letreiro” via WAAPI.
  * Todas as durações e distâncias vêm dos tokens em app/globals.css.
- * Quem usa: lib/theme (revelação), lib/i18n (letreiro) e o papel alternado do perfil.
+ * Quem usa: lib/theme (revelação) e lib/i18n (letreiro). Os helpers de token servem a todo o site.
  */
 
 export function token(name: string) {
@@ -97,22 +97,4 @@ export function createLetreiro() {
   }
 
   return { leave, enter };
-}
-
-/** Papel alternado: mesma gramática do letreiro (sobe e some, entra por baixo). */
-export function roleLeave(el: HTMLElement) {
-  const shift = token("--lang-shift");
-  return el.animate(
-    [{ opacity: 1, transform: "translateY(0)" }, { opacity: 0, transform: `translateY(calc(${shift} * -1))` }],
-    { duration: tokenMs("--dur-lang-out"), easing: token("--ease-out"), fill: "forwards" },
-  );
-}
-
-export function roleEnter(el: HTMLElement) {
-  el.getAnimations().forEach((a) => a.cancel());
-  const shift = token("--lang-shift");
-  return el.animate(
-    [{ opacity: 0, transform: `translateY(${shift})` }, { opacity: 1, transform: "translateY(0)" }],
-    { duration: tokenMs("--dur-lang-in"), easing: token("--ease-out"), fill: "backwards" },
-  );
 }

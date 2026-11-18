@@ -9,7 +9,7 @@ import { useTheme } from "@/lib/theme/theme";
 import s from "./margin.module.css";
 
 /*
- * Margem da folha (DESIGN.md §5–6): cidade e hora local à esquerda; idioma e tema à direita.
+ * Margem da folha (DESIGN.md §5–6): país e hora local à esquerda; idioma e tema à direita.
  * Devolve as duas pontas; quem desenha a faixa é a home (features/home).
  */
 export function Margin() {
@@ -18,7 +18,7 @@ export function Margin() {
   return (
     <>
       <p className={s.where}>
-        <span>{profile.city}</span>
+        <T>{t(profile.place)}</T>
         <span aria-hidden="true">·</span>
         <Clock timeZone={profile.timeZone} />
         <span className="sr-only">

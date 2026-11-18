@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import {
   siDocker,
+  siGithub,
   siGooglecloud,
   siGrafana,
   siJavascript,
@@ -32,6 +33,7 @@ const SIMPLE: Record<string, { title: string; path: string }> = {
   // o pgvector não tem logo: usa o elefante do PostgreSQL, de quem é extensão
   pgvector: { title: "pgvector", path: siPostgresql.path },
   spotify: siSpotify, // atribuição no quadro Ouvindo
+  github: siGithub, // contato
 };
 
 /** Tecnologias sem ícone: viram monograma com este nome */

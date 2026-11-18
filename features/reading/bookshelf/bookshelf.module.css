@@ -36,6 +36,9 @@
   width: calc(var(--depth) + 4px);
   height: calc(var(--book-height) * var(--book-scale));
   padding: 0;
+  /* local: sem o fundo e a borda padrão do <button>, que apareciam atrás do livro aberto */
+  border: 0;
+  background: transparent;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
   transition-property: none;

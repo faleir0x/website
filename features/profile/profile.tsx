@@ -1,15 +1,15 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { Icon } from "@/components/icon";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { profile } from "@/content/profile";
-import { ui } from "@/content/ui";
 import { T, useI18n } from "@/lib/i18n/i18n";
-import { prefersReducedMotion, roleEnter, roleLeave, tokenMs } from "@/lib/motion/switch";
+import { prefersReducedMotion, tokenMs } from "@/lib/motion/switch";
+import { decodeFrame, type DecodeChar } from "./decode";
+import { Contact } from "./contact";
 import s from "./profile.module.css";
 
 /*
- * Perfil (barra lateral, DESIGN.md §6): foto, nome, papel alternado, bio e contato.
+ * Perfil (barra lateral, DESIGN.md §6): foto, nome, papel, bio e contato.
  * Devolve as peças soltas; quem posiciona a barra é a home (features/home).
  */
 export function Profile() {
@@ -21,7 +21,7 @@ export function Profile() {
       </figure>
       <div>
         <h1 className={s.name}>{profile.name}</h1>
-        <RoleRotator roles={profile.roles} joiner={t(ui.and)} />
+        <RoleTitle text={profile.title} />
       </div>
       <div className={s.bio}>
         {profile.bio.map((para, i) => (
@@ -30,98 +30,61 @@ export function Profile() {
           </p>
         ))}
       </div>
-      <div className={s.actions}>
-        <CopyEmail email={profile.email} label={t(ui.copyEmail)} done={t(ui.copied)} />
-        <a className={s.chip} href={profile.linkedin} target="_blank" rel="noreferrer">
-          LinkedIn <Icon name="arrow" />
-          <span className="sr-only">{t(ui.newTab)}</span>
-        </a>
-      </div>
+      <Contact />
     </>
   );
 }
 
 /**
- * Um papel por vez, alternando como o letreiro (DESIGN.md §6). Leitor de tela ouve os dois juntos.
- * Pausa com hover ou foco, para quando a aba some e não alterna sob reduced motion.
+ * O papel embaixo do nome, que se decodifica uma vez ao abrir a página (DESIGN.md §6, opção A de
+ * design-explorations/titulo-papel/). O mouse no nome decodifica de novo. Reduced motion: só o texto.
+ * O leitor de tela lê o texto inteiro, nunca as letras embaralhadas.
  */
-function RoleRotator({ roles, joiner }: { roles: string[]; joiner: string }) {
-  const [i, setI] = useState(0);
-  const [still, setStill] = useState(false);
-  const ref = useRef<HTMLSpanElement>(null);
-  const paused = useRef(false);
-  const entering = useRef(false);
+function RoleTitle({ text }: { text: string }) {
+  const [frame, setFrame] = useState<DecodeChar[] | null>(null);
+  const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+
+  const decode = useCallback(() => {
+    if (timer.current !== undefined || prefersReducedMotion()) return; // uma de cada vez
+    const total = tokenMs("--dur-decode");
+    const start = performance.now();
+    const tick = () => {
+      const next = decodeFrame(text, performance.now() - start, total);
+      if (next.every((c) => c.done)) {
+        setFrame(null);
+        timer.current = undefined;
+        return;
+      }
+      setFrame(next);
+      timer.current = setTimeout(tick, tokenMs("--decode-tick"));
+    };
+    tick();
+  }, [text]);
 
   useEffect(() => {
-    if (prefersReducedMotion() || roles.length < 2) {
-      setStill(true);
-      return;
-    }
-    const id = setInterval(() => {
-      const el = ref.current;
-      if (!el || paused.current || document.hidden) return;
-      if (el.getAnimations().some((a) => a.playState === "running")) return; // troca anterior ainda em curso
-      roleLeave(el)
-        .finished.then(() => {
-          entering.current = true;
-          setI((n) => (n + 1) % roles.length);
-        })
-        .catch(() => {});
-    }, tokenMs("--role-interval"));
-    return () => clearInterval(id);
-  }, [roles.length]);
+    decode();
+    return () => {
+      clearTimeout(timer.current);
+      timer.current = undefined;
+    };
+  }, [decode]);
 
-  useLayoutEffect(() => {
-    if (!entering.current || !ref.current) return;
-    entering.current = false;
-    roleEnter(ref.current);
-  }, [i]);
-
-  const pause = () => {
-    paused.current = true;
-  };
-  const resume = () => {
-    paused.current = false;
+  const replay = (e: React.PointerEvent) => {
+    if (e.pointerType === "mouse" && window.matchMedia("(hover: hover) and (pointer: fine)").matches) decode();
   };
 
   return (
-    <p className={s.roles} onMouseEnter={pause} onMouseLeave={resume} onFocus={pause} onBlur={resume}>
-      <span className="sr-only">{roles.join(` ${joiner} `)}</span>
-      <span ref={ref} className={s.role} aria-hidden="true">
-        {still ? roles.join(" · ") : roles[i]}
+    <p className={s.roles} onPointerEnter={replay}>
+      <span className="sr-only">{text}</span>
+      <span aria-hidden="true">
+        {frame
+          ? frame.map((c, i) => (
+              <span key={i} className={c.done ? undefined : s.pending}>
+                {c.ch}
+              </span>
+            ))
+          : text}
       </span>
     </p>
-  );
-}
-
-/** Copia o e-mail; se o navegador recusar, mostra o endereço para copiar à mão. */
-function CopyEmail({ email, label, done }: { email: string; label: string; done: string }) {
-  const [state, setState] = useState<"idle" | "copied" | "failed">("idle");
-  const copy = async () => {
-    try {
-      await navigator.clipboard.writeText(email);
-      setState("copied");
-    } catch {
-      setState("failed");
-    }
-  };
-  useEffect(() => {
-    if (state !== "copied") return;
-    const id = setTimeout(() => setState("idle"), 1400);
-    return () => clearTimeout(id);
-  }, [state]);
-  return (
-    <>
-      <button type="button" className={`${s.chip} ${s.chipSolid}`} onClick={copy}>
-        {/* os dois rótulos ocupam a mesma célula: o botão fica com a largura do maior e não pula ao copiar */}
-        <span className={s.swapLabel}>
-          <T data-off={state === "copied" || undefined}>{label}</T>
-          <T data-off={state !== "copied" || undefined}>{done}</T>
-        </span>
-        <Icon name="copy" />
-      </button>
-      {state === "failed" && <span className={s.emailFallback}>{email}</span>}
-      <span role="status" className="sr-only">{state === "copied" ? `${done}: ${email}` : ""}</span>
-    </>
   );
 }

@@ -8,38 +8,55 @@
 .avatar > img { width: 100%; height: 100%; object-fit: cover; }
 .name { font: var(--text-display); letter-spacing: var(--track-display); margin: 0; }
 .roles { margin: var(--space-6) 0 0; color: var(--color-text-secondary); }
-.role { display: inline-block; }
+.pending { opacity: 0.45; } /* letra ainda embaralhada na decodificação do papel */
 /* texto sobre você: dois parágrafos curtos em body (16px), em text-secondary para não competir com o nome */
 .bio { display: grid; gap: var(--space-12); font: var(--text-body); color: var(--color-text-secondary); }
 .bio p { margin: 0; text-wrap: pretty; }
-/* os botões cabem numa linha (214px na barra de 240); só o e-mail de fallback quebra para baixo.
-   margin-top: auto empurra o contato para a base da barra, alinhado com o fim da folha */
+/* contato: só ícones, numa linha; margin-top: auto empurra para a base da barra, alinhado com o fim da folha.
+   Só o e-mail de fallback (quando a cópia falha) quebra para baixo. */
 .actions { display: flex; flex-wrap: wrap; gap: var(--space-6); margin-top: auto; }
 
-.chip {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-6);
-  padding: var(--space-6) var(--space-12);
-  border-radius: var(--radius-pill);
+/* 36px: alvo confortável (R7 pede 24) */
+.iconBtn {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
   border: 0;
-  cursor: pointer;
-  font: var(--text-body-sm);
+  border-radius: var(--radius-pill);
   background: var(--color-bg-fill);
   color: var(--color-text);
-  white-space: nowrap;
+  cursor: pointer;
   transition: transform var(--dur-hover) var(--ease-out);
 }
-.chip:active { transform: scale(var(--press-scale)); transition-duration: var(--dur-press); }
-.chipSolid { background: var(--color-inverse-bg); color: var(--color-inverse-text); }
-.swapLabel { display: inline-grid; }
-.swapLabel > * { grid-area: 1 / 1; text-align: center; }
-.swapLabel > [data-off] { visibility: hidden; }
+.iconBtn:active { transform: scale(var(--press-scale)); transition-duration: var(--dur-press); }
+.iconArt { display: grid; place-items: center; }
+/* o nome em balão, como nas ferramentas */
+.tip {
+  position: absolute;
+  bottom: calc(100% + var(--space-6));
+  left: 50%;
+  z-index: 5;
+  padding: 3px var(--space-8);
+  border-radius: 6px;
+  background: var(--color-inverse-bg);
+  color: var(--color-inverse-text);
+  font: var(--text-micro);
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-50%, 2px);
+  transition: opacity var(--dur-press) var(--ease-hover), transform var(--dur-hover) var(--ease-out);
+}
+.iconBtn:focus-visible .tip, .tip[data-on] { opacity: 1; transform: translate(-50%, 0); }
 .emailFallback { flex-basis: 100%; font: var(--text-caption); color: var(--color-text); user-select: all; }
 
 @media (hover: hover) and (pointer: fine) {
-  .chip:hover { transform: translateY(var(--lift-chip)); }
-  .chip:hover:active { transform: scale(var(--press-scale)); }
+  .iconBtn:hover { transform: translateY(var(--lift-chip)); }
+  .iconBtn:hover:active { transform: scale(var(--press-scale)); }
+  .iconBtn:hover .tip { opacity: 1; transform: translate(-50%, 0); }
 }
 
 /* entrada: o nome lidera, o resto acompanha (DESIGN.md §4) */

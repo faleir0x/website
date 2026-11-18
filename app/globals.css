@@ -85,7 +85,8 @@
   --dur-lang-in-reduced: 120ms;
   --lang-wave-max: 140ms; /* teto da onda do letreiro */
   --lang-shift: 0.45em;   /* distância vertical do letreiro */
-  --role-interval: 3200ms; /* tempo entre Software Engineer e AI Engineer */
+  --dur-decode: 900ms;  /* o papel embaixo do nome se decodifica (uma vez) */
+  --decode-tick: 45ms;  /* passo das letras embaralhadas: lento o bastante para ler como texto */
   --delay-reel: 800ms;  /* toque: o reel do projeto espera a onda de entrada antes de tocar */
   --delay-undim: 60ms;  /* folha espera antes de desescurecer: atravessar o vão não pisca */
 
