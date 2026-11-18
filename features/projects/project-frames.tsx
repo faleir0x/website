@@ -27,17 +27,22 @@ export type Project = {
 /* As linhas de projetos da folha: um quadro por projeto, completando a última linha com “em breve”. */
 export function ProjectFrames() {
   const { t } = useI18n();
-  return fillRows(projects).map((p, i) => {
+  const slots = fillRows(projects);
+  const soon = slots.filter((p) => !p || p.status === "soon").length;
+  const frames = slots.map((p, i) => {
+    // no celular, só o primeiro quadro leva o rótulo da seção
+    const section = i === 0 ? t(ui.sectionProjects) : undefined;
     if (!p || p.status === "soon") {
       const title = p?.title ?? t(ui.nextProject);
       return (
-        <Frame key={`p${i}`} label={`${title}, ${t(ui.soon)}`} title={title}>
+        // no celular, os quadros vazios somem e viram a faixa abaixo
+        <Frame key={`p${i}`} label={`${title}, ${t(ui.soon)}`} title={title} section={section} mobile="hidden">
           <Placeholder label={t(ui.soon)} />
         </Frame>
       );
     }
     return (
-      <Frame key={`p${i}`} href={p.href} newTab={t(ui.newTab)} label={`${p.title}, ${t(p.kind)}`} title={p.title}>
+      <Frame key={`p${i}`} href={p.href} newTab={t(ui.newTab)} label={`${p.title}, ${t(p.kind)}`} title={p.title} section={section}>
         {p.reel ? (
           <ProjectReel reel={p.reel} />
         ) : p.image ? (
@@ -54,4 +59,13 @@ export function ProjectFrames() {
       </Frame>
     );
   });
+  // só no celular: uma faixa fina no lugar dos quadros “em breve”
+  if (soon > 0) {
+    frames.push(
+      <li key="soon" className={s.soonStrip}>
+        {soon} {t(soon === 1 ? ui.soonOne : ui.soonMany)}
+      </li>,
+    );
+  }
+  return frames;
 }

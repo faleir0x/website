@@ -23,9 +23,18 @@ export function ListeningFrame() {
   const status = np.state === "none" ? t(ui.nothingPlaying) : np.state === "playing" ? "Spotify" : t(ui.lastPlayed);
   const label = np.state === "none" ? `${t(ui.listening)}: ${status}` : `${t(ui.listening)} (${status}): ${np.track}, ${np.artist}`;
 
+  const cover = np.state !== "none" ? np.cover : undefined;
   return (
-    <Frame href={np.state === "none" ? undefined : np.href} newTab={t(ui.newTab)} label={label} title={<T>{t(ui.listening)}</T>}>
-      {np.state !== "none" && np.cover ? <img src={np.cover} alt="" loading="lazy" /> : <Placeholder label={t(ui.imgCover)} />}
+    <Frame
+      href={np.state === "none" ? undefined : np.href}
+      newTab={t(ui.newTab)}
+      label={label}
+      title={<T>{t(ui.listening)}</T>}
+      section={t(ui.sectionNow)}
+      mobile="auto"
+    >
+      {/* computador: a capa preenche o quadro e o cartão da faixa fica por cima */}
+      {cover ? <img className={s.big} src={cover} alt="" loading="lazy" /> : <Placeholder className={s.big} label={t(ui.imgCover)} />}
       {np.state !== "none" && (
         <div className={s.np}>
           <b>
@@ -34,6 +43,26 @@ export function ListeningFrame() {
           <TechIcon slug="spotify" size={14} />
         </div>
       )}
+      {/* celular: uma linha com a capa pequena, a faixa e o artista legíveis */}
+      <div className={s.row} aria-hidden="true">
+        {cover ? <img className={s.thumb} src={cover} alt="" loading="lazy" /> : <span className={s.thumb} />}
+        <span className={s.rowText}>
+          <small>
+            <T>{t(ui.listening)}</T>
+          </small>
+          {np.state === "none" ? (
+            <b>
+              <T>{t(ui.nothingPlaying)}</T>
+            </b>
+          ) : (
+            <>
+              <b>{np.track}</b>
+              <span>{np.artist}</span>
+            </>
+          )}
+        </span>
+        {np.state !== "none" && <TechIcon slug="spotify" size={18} />}
+      </div>
     </Frame>
   );
 }

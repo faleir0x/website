@@ -14,3 +14,17 @@
   box-shadow: var(--shadow-lift);
   color: var(--color-text);
 }
+
+/* faixa “N projetos em breve”: só no celular, no lugar dos quadros vazios */
+.soonStrip { display: none; }
+@media (max-width: 720px) {
+  .soonStrip {
+    display: block;
+    padding: var(--space-12) var(--space-16);
+    border-radius: var(--radius-frame);
+    background: var(--grain), var(--color-placeholder);
+    background-size: 180px, auto;
+    color: var(--color-placeholder-text);
+    font: var(--text-caption);
+  }
+}

@@ -45,3 +45,10 @@
 @media (prefers-reduced-motion: reduce) {
   .tools li:hover { transform: none; }
 }
+
+/* celular: sem hover, o nome fica sempre à vista embaixo do ícone; a grade cresce com o conteúdo */
+@media (max-width: 720px) {
+  .tools { position: relative; inset: auto; grid-template-rows: none !important; gap: var(--space-8); padding: var(--space-12); }
+  .tools li { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--space-6); padding: var(--space-12) var(--space-4) var(--space-8); }
+  .tip, .tool:focus-visible .tip { position: static; opacity: 1; transform: none; padding: 0; background: none; color: var(--color-text); text-align: center; white-space: normal; }
+}

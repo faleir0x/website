@@ -37,8 +37,15 @@
   .tile:hover .tileBack { opacity: 1; transform: translateY(0); }
 }
 
+/* celular: uma lista, do emprego atual para o mais antigo, com o resumo e as stacks sempre à vista
+   (sem hover, não há o que virar) */
 @media (max-width: 720px) {
-  .tiles { position: relative; inset: auto; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-6); padding: var(--space-8); }
-  /* altura que cabe o resumo inteiro na largura do celular: virar nunca corta texto (R3) */
-  .tile { min-height: 236px; }
+  .tiles { position: relative; inset: auto; display: flex; flex-direction: column-reverse; gap: var(--space-8); padding: var(--space-8); }
+  .tile { display: grid; gap: var(--space-12); padding: var(--space-16); cursor: default; }
+  .tileFace, .tileBack,
+  .tile[data-open] .tileFace, .tile[data-open] .tileBack,
+  .tile:focus-visible .tileFace, .tile:focus-visible .tileBack { position: static; inset: auto; opacity: 1; transform: none; }
+  .tileFace { gap: var(--space-8); }
+  .tileBack { gap: var(--space-12); }
+  .tileStacks:empty { display: none; } /* emprego sem stacks não guarda espaço vazio */
 }

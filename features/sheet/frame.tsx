@@ -30,10 +30,14 @@ type FrameProps = {
   action?: { label: string; onClick: () => void; popup?: "dialog" };
   /** cell: um quadro 4:3. row: a linha inteira da folha, 4:1 (Experiência) */
   size?: "cell" | "row";
+  /** Só no celular: rótulo de seção acima do quadro (“Projetos”, “Agora”…). No computador, a folha não tem rótulos */
+  section?: string;
+  /** Só no celular: cell = 4:3 na largura da tela; auto = altura do conteúdo; hidden = não aparece */
+  mobile?: "cell" | "auto" | "hidden";
   children: ReactNode;
 };
 
-export function Frame({ label, title, href, newTab = "", action, size = "cell", children }: FrameProps) {
+export function Frame({ label, title, href, newTab = "", action, size = "cell", section, mobile = "cell", children }: FrameProps) {
   const body = (
     <>
       <div className={s.img}>
@@ -51,10 +55,15 @@ export function Frame({ label, title, href, newTab = "", action, size = "cell", 
       <h2 className="sr-only">{title}</h2>
     </>
   );
-  const cls = size === "row" ? `${s.frame} ${s.row}` : s.frame;
+  const cls = [s.frame, size === "row" && s.row, mobile === "auto" && s.auto].filter(Boolean).join(" ");
   const external = !!href && /^https?:\/\//.test(href);
   return (
-    <li className={s.item}>
+    <li className={mobile === "hidden" ? `${s.item} ${s.mobileHidden}` : s.item}>
+      {section && (
+        <span className={s.section} aria-hidden="true">
+          {section}
+        </span>
+      )}
       {href ? (
         <a
           className={cls}
@@ -74,6 +83,7 @@ export function Frame({ label, title, href, newTab = "", action, size = "cell", 
 }
 
 /** Quadro sem imagem ainda: grão na cor de placeholder, com uma legenda opcional no canto. */
-export function Placeholder({ label }: { label?: string }) {
-  return <span className={label ? `${s.ph} ${s.phLabel}` : s.ph} data-label={label} aria-hidden="true" />;
+export function Placeholder({ label, className }: { label?: string; className?: string }) {
+  const cls = [s.ph, label && s.phLabel, className].filter(Boolean).join(" ");
+  return <span className={cls} data-label={label} aria-hidden="true" />;
 }

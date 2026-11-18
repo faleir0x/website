@@ -79,7 +79,15 @@
 @media (max-width: 720px) {
   .page { grid-template-columns: 1fr; grid-template-rows: none; padding: var(--space-12) var(--space-16) 0; }
   .margin, .side, .main { grid-column: 1; grid-row: auto; }
-  .margin { margin-bottom: var(--space-24); }
+  /* a margem gruda no topo enquanto se rola: idioma e tema sempre a um toque */
+  .margin {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    margin: calc(var(--space-12) * -1) 0 var(--space-24);
+    padding-top: var(--space-12);
+    background: var(--color-bg);
+  }
   .side { margin-bottom: var(--space-32); padding-bottom: 0; }
   .main { padding-bottom: 0; }
   .grass { --grass-height: 120px; margin-top: var(--space-40); }

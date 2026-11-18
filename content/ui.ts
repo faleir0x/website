@@ -17,6 +17,11 @@ export const ui = {
   books: { pt: "livros", en: "books" },
   book: { pt: "livro", en: "book" },
   soon: { pt: "em breve", en: "soon" },
+  // rótulos de seção, só no celular
+  sectionProjects: { pt: "Projetos", en: "Projects" },
+  sectionNow: { pt: "Agora", en: "Now" },
+  soonOne: { pt: "projeto em breve", en: "more project coming soon" },
+  soonMany: { pt: "projetos em breve", en: "more projects coming soon" },
   nextProject: { pt: "Próximo projeto", en: "Next project" },
   experience: { pt: "Experiência", en: "Experience" },
   today: { pt: "hoje", en: "now" },

@@ -18,6 +18,17 @@
 /* atribuição pedida pelas regras da Spotify: ícone monocromático, cor secundária */
 .np svg { flex: none; color: var(--color-text-secondary); }
 
+/* linha do celular: escondida no computador */
+.row { display: none; }
+
+/* celular: o quadro vira uma linha com capa de 72px, “Ouvindo”, faixa e artista */
 @media (max-width: 720px) {
-  .np b { white-space: normal; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+  .big.big, .np { display: none; } /* .big.big: vence o display do placeholder do Frame */
+  .row { display: flex; align-items: center; gap: var(--space-12); padding: var(--space-12); }
+  .thumb { width: 72px; height: 72px; flex: none; border-radius: var(--radius-inner); object-fit: cover; background: var(--grain), var(--color-placeholder); background-size: 180px, auto; }
+  .rowText { display: grid; flex: 1; min-width: 0; }
+  .rowText small { font: var(--text-micro); color: var(--color-text-secondary); }
+  .rowText b { font: var(--text-body-strong); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .rowText > span { font: var(--text-caption); color: var(--color-text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .row > svg { flex: none; color: var(--color-text-secondary); margin-right: var(--space-4); }
 }

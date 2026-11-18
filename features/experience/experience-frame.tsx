@@ -30,7 +30,7 @@ export function ExperienceFrame() {
   const { t, lang } = useI18n();
   const [open, setOpen] = useState<number | null>(null);
   return (
-    <Frame size="row" label={t(ui.experience)} title={<T>{t(ui.experience)}</T>}>
+    <Frame size="row" label={t(ui.experience)} title={<T>{t(ui.experience)}</T>} section={t(ui.experience)}>
       <ol className={s.tiles}>
         {experience.map((j, i) => {
           const when = period(j.start, j.end, lang, t(ui.today));

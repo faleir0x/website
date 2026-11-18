@@ -16,7 +16,7 @@ export function ToolsFrame() {
   // 4 por linha; com poucas ferramentas, as linhas continuam 3 para os ícones não esticarem
   const rows = Math.max(3, Math.ceil(tools.length / 4));
   return (
-    <Frame label={t(ui.tools)} title={<T>{t(ui.tools)}</T>}>
+    <Frame label={t(ui.tools)} title={<T>{t(ui.tools)}</T>} section={t(ui.tools)} mobile="auto">
       <ul className={s.tools} data-overflow="visible" style={{ gridTemplateRows: `repeat(${rows}, minmax(0, 1fr))` }}>
         {tools.map((tool) => (
           // focável: o rótulo com o nome aparece no hover e no foco (R1)

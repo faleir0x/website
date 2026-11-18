@@ -12,9 +12,9 @@
 /* texto sobre você: dois parágrafos curtos em body (16px), em text-secondary para não competir com o nome */
 .bio { display: grid; gap: var(--space-12); font: var(--text-body); color: var(--color-text-secondary); }
 .bio p { margin: 0; text-wrap: pretty; }
-/* contato: só ícones, numa linha; margin-top: auto empurra para a base da barra, alinhado com o fim da folha.
-   Só o e-mail de fallback (quando a cópia falha) quebra para baixo. */
-.actions { display: flex; flex-wrap: wrap; gap: var(--space-6); margin-top: auto; }
+/* contato: só ícones, numa linha, logo abaixo da bio. Só o e-mail de fallback (quando a cópia falha)
+   quebra para baixo. */
+.actions { display: flex; flex-wrap: wrap; gap: var(--space-6); }
 
 /* 36px: alvo confortável (R7 pede 24) */
 .iconBtn {
@@ -52,6 +52,12 @@
 }
 .iconBtn:focus-visible .tip, .tip[data-on] { opacity: 1; transform: translate(-50%, 0); }
 .emailFallback { flex-basis: 100%; font: var(--text-caption); color: var(--color-text); user-select: all; }
+
+/* celular: alvos de 44px, o tamanho de toque confortável */
+@media (max-width: 720px) {
+  .actions { gap: var(--space-8); }
+  .iconBtn { width: 44px; height: 44px; }
+}
 
 @media (hover: hover) and (pointer: fine) {
   .iconBtn:hover { transform: translateY(var(--lift-chip)); }

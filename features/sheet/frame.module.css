@@ -93,8 +93,24 @@ a.frame { cursor: pointer; }
   .sheet > .item > .frame { animation-delay: 0ms !important; }
 }
 
+/* rótulo de seção: só no celular (no computador a folha não tem legenda, DESIGN.md §6) */
+.section { display: none; }
+
+/* Celular (DESIGN.md §5 · mobile, opção A de design-explorations/mobile-layouts/): uma coluna, tudo na
+   largura da tela, com um rótulo pequeno por seção. Nada aqui depende de hover. */
 @media (max-width: 720px) {
-  .sheet { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-12); }
-  .row .img { aspect-ratio: auto; height: auto; }
-  .row .clip { position: relative; }
+  .sheet { grid-template-columns: minmax(0, 1fr); gap: var(--space-12); --grow-reel: 1; }
+  .item { display: block; }
+  .mobileHidden { display: none; }
+  .section {
+    display: block;
+    margin: var(--space-24) 0 var(--space-12);
+    font: 500 0.75rem/1.4 var(--font-sans);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+  }
+  .item:first-child .section { margin-top: 0; }
+  .row .img, .auto .img { aspect-ratio: auto; height: auto; }
+  .row .clip, .auto .clip { position: relative; }
 }
